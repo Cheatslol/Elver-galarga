@@ -3002,7 +3002,7 @@
           won = true;
           if (level < levels.length - 1) {
             msg = '¡Nivel ' + (level + 1) + ' OK!';
-            setTimeout(() => loadLevel(level + 1), 700);
+            setTimeout(() => { if (currentGame === 'trolljump') loadLevel(level + 1); }, 700);
           } else {
             msg = '¡TODOS LOS NIVELES! 🎉';
           }
@@ -3081,8 +3081,10 @@
 
     // INIT
     renderGames();
+
+    window.addEventListener('pagehide', () => {
+      try { localStorage.setItem('elvergalarga_last_visit', String(Date.now())); } catch (e) {}
+    });
   </script>
 </body>
 </html>
-
-<script>window.addEventListener('pagehide',()=>{try{localStorage.setItem('elvergalarga_last_visit',String(Date.now()))}catch(e){}});</script>
