@@ -252,6 +252,7 @@
         <button class="nav-cat" data-cat="multijugador">Multijugador</button>
         <button class="nav-cat" data-cat="3d">3D</button>
         <button class="nav-cat" data-cat="emulador">Emulador</button>
+        <button class="nav-cat" data-cat="roms">ROMs</button>
       </nav>
       <button class="menu-toggle" id="menuToggle">☰</button>
     </div>
@@ -285,6 +286,7 @@
       <button class="pill" data-cat="multijugador">🎮 Multijugador</button>
       <button class="pill" data-cat="3d">🧊 3D</button>
       <button class="pill" data-cat="emulador">💾 Emulador</button>
+      <button class="pill" data-cat="roms">💿 ROMs</button>
     </div>
     <div class="games-grid" id="gamesGrid"></div>
   </main>
@@ -449,10 +451,12 @@
 
   <!-- LIBRERÍA LEGAL DE ROMs (homebrew / dominio público) -->
   <section style="max-width:1400px;margin:2.5rem auto 0;padding:0 1.5rem;" id="roms-legales">
-    <div class="section-header"><h2>💾 Librería de ROMs legales (Rooms)</h2></div>
+    <div class="section-header"><h2>💾 Más sitios de ROMs legales</h2></div>
     <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1rem;max-width:780px;line-height:1.5">
-      Solo enlaces a <strong>homebrew, dominio público y freeware</strong>. No hay ROMs comerciales.
-      Descarga la ROM y ábrela en <strong>Emulador Retro</strong> (categoría Emulador).
+      La categoría <strong>💿 ROMs</strong> de arriba ya trae 20 ROMs homebrew listas para jugar o descargar.
+      Aquí hay más catálogos de <strong>homebrew, dominio público y freeware</strong>: descárgalas y
+      ábrelas en <strong>Emulador Retro</strong>. No se enlazan ROMs comerciales (Pokémon, Mario, etc.
+      tienen copyright y no se pueden distribuir).
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:1rem;">
       <a href="https://itch.io/games/free/tag-homebrew/tag-nes-rom" target="_blank" rel="noopener"
@@ -551,11 +555,61 @@
     let animId = null;
 
     function catLabel(cat) {
-      return { arcade:'Arcade', puzzle:'Puzzle', accion:'Acción', clasicos:'Clásicos', multijugador:'Multijugador', '3d':'3D', emulador:'Emulador' }[cat] || cat;
+      return { arcade:'Arcade', puzzle:'Puzzle', accion:'Acción', clasicos:'Clásicos', multijugador:'Multijugador', '3d':'3D', emulador:'Emulador', roms:'ROMs' }[cat] || cat;
+    }
+
+    // ========== LIBRERÍA DE ROMs (homebrew con distribución libre) ==========
+    // Todas las ROMs son homebrew publicadas por sus autores para descarga libre
+    // (colección retrobrews). No hay ROMs comerciales: los juegos de Nintendo,
+    // Sega, etc. siguen con copyright y no se pueden distribuir aquí.
+    const ROM_BASE = 'https://raw.githubusercontent.com/retrobrews';
+    const romLibrary = [
+      { id: 'nomolos', title: 'Nomolos: Storming the Catsle', author: 'Gradual Games', core: 'nes', sys: 'NES', file: 'nes-games/master/nomolos.nes', emoji: '🐱', color: 'linear-gradient(135deg,#d63031,#fdcb6e)', desc: 'Plataformas de acción al estilo 8 bits clásico.' },
+      { id: 'owlia', title: 'The Legends of Owlia', author: 'Gradual Games', core: 'nes', sys: 'NES', file: 'nes-games/master/owlia.nes', emoji: '🦉', color: 'linear-gradient(135deg,#0984e3,#00cec9)', desc: 'Aventura de acción con exploración y jefes.' },
+      { id: 'nova', title: 'Nova the Squirrel', author: 'NovaSquirrel', core: 'nes', sys: 'NES', file: 'nes-games/master/novathesquirrel.nes', emoji: '🐿️', color: 'linear-gradient(135deg,#6c5ce7,#a29bfe)', desc: 'Plataformas con poderes copiados de enemigos.' },
+      { id: 'driar', title: 'Driar', author: 'Adolfsson & Eriksson', core: 'nes', sys: 'NES', file: 'nes-games/master/driar.nes', emoji: '🟠', color: 'linear-gradient(135deg,#e17055,#fdcb6e)', desc: 'Puzzle-plataformas de rodar y saltar.' },
+      { id: 'twindragons', title: 'Twin Dragons', author: 'Antoine Gohin', core: 'nes', sys: 'NES', file: 'nes-games/master/twindragons.nes', emoji: '🐉', color: 'linear-gradient(135deg,#00b894,#55efc4)', desc: 'Plataformas con dos dragones y magia de hielo.' },
+      { id: 'ucity', title: 'µCity', author: 'AntonioND', core: 'gbc', sys: 'Game Boy Color', file: 'gbc-games/master/ucity.gbc', emoji: '🏙️', color: 'linear-gradient(135deg,#2d3436,#00cec9)', desc: 'Constructor de ciudades tipo SimCity en GBC.' },
+      { id: 'geometrix', title: 'Geometrix', author: 'Homebrew GBC', core: 'gbc', sys: 'Game Boy Color', file: 'gbc-games/master/geometrix.gbc', emoji: '🔷', color: 'linear-gradient(135deg,#0984e3,#74b9ff)', desc: 'Puzzle geométrico de reflejos.' },
+      { id: 'brickster', title: 'Brickster', author: 'rv6502', core: 'gbc', sys: 'Game Boy Color', file: 'gbc-games/master/brickster.gbc', emoji: '🧱', color: 'linear-gradient(135deg,#e17055,#d63031)', desc: 'Rompe-ladrillos clásico portátil.' },
+      { id: 'blastah', title: 'Blastah', author: 'Homebrew GB', core: 'gb', sys: 'Game Boy', file: 'gbc-games/master/blastah.gb', emoji: '💥', color: 'linear-gradient(135deg,#2d3436,#636e72)', desc: 'Shooter monocromo para Game Boy.' },
+      { id: 'anguna', title: 'Anguna', author: 'Nathan Tolbert', core: 'gba', sys: 'Game Boy Advance', file: 'gba-games/master/anguna.gba', emoji: '⚔️', color: 'linear-gradient(135deg,#6c5ce7,#fd79a8)', desc: 'Aventura RPG con mazmorras y objetos.' },
+      { id: 'picross', title: 'Battle Picross', author: 'Sean Reid', core: 'gba', sys: 'Game Boy Advance', file: 'gba-games/master/battlepicross.gba', emoji: '🧩', color: 'linear-gradient(135deg,#fdcb6e,#e17055)', desc: 'Nonogramas por turnos contra la CPU.' },
+      { id: 'blastarena', title: 'Blast Arena Advance', author: 'Mathew Carr', core: 'gba', sys: 'Game Boy Advance', file: 'gba-games/master/blastarenaadvance.gba', emoji: '💣', color: 'linear-gradient(135deg,#d63031,#fd79a8)', desc: 'Arena de bombas estilo laberinto.' },
+      { id: 'astroforce', title: 'Astro Force', author: 'Homebrew SMS', core: 'segaMS', sys: 'Master System', file: 'sms-games/master/astroforce.sms', emoji: '🚀', color: 'linear-gradient(135deg,#0984e3,#6c5ce7)', desc: 'Shooter espacial con jefes.' },
+      { id: 'blockquest', title: 'Block Quest', author: 'Homebrew SMS', core: 'segaMS', sys: 'Master System', file: 'sms-games/master/blockquest.sms', emoji: '🟦', color: 'linear-gradient(135deg,#00cec9,#0984e3)', desc: 'Puzzle de empujar bloques por niveles.' },
+      { id: 'sms2048', title: '2048 (Master System)', author: 'grz', core: 'segaMS', sys: 'Master System', file: 'sms-games/master/2048grz.sms', emoji: '🔢', color: 'linear-gradient(135deg,#fdcb6e,#e17055)', desc: 'El 2048 portado a 8 bits de Sega.' },
+      { id: 'oldtowers', title: 'Old Towers', author: 'Retrosouls', core: 'segaMD', sys: 'Mega Drive', file: 'md-games/master/oldtowers.bin', emoji: '🏰', color: 'linear-gradient(135deg,#2d3436,#e17055)', desc: 'Puzzle de deslizarse por torres con trampas.' },
+      { id: 'xump2', title: 'Xump 2', author: 'Retrosouls', core: 'segaMD', sys: 'Mega Drive', file: 'md-games/master/xump2.bin', emoji: '⬛', color: 'linear-gradient(135deg,#6c5ce7,#00cec9)', desc: 'Puzzle minimalista de limpiar el tablero.' },
+      { id: 'papicommando', title: 'Papi Commando Remix', author: 'WaterMelon', core: 'segaMD', sys: 'Mega Drive', file: 'md-games/master/papicommandoremix.bin', emoji: '🎅', color: 'linear-gradient(135deg,#d63031,#00b894)', desc: 'Run and gun navideño con mucha acción.' },
+      { id: 'hilda', title: 'Hilda', author: 'O_manko', core: 'snes', sys: 'SNES', file: 'snes-games/master/hilda.sfc', emoji: '🧙', color: 'linear-gradient(135deg,#fd79a8,#6c5ce7)', desc: 'Plataformas homebrew para Super Nintendo.' },
+      { id: 'nwarp', title: 'N-Warp Daisakusen', author: 'Kannagi / homebrew', core: 'snes', sys: 'SNES', file: 'snes-games/master/nwarpdaisakusen.smc', emoji: '🥊', color: 'linear-gradient(135deg,#00b894,#fdcb6e)', desc: 'Peleas multijugador rápidas hasta 4 jugadores.' },
+    ];
+    const romUrl = rom => `${ROM_BASE}/${rom.file}`;
+    const romFileName = rom => rom.file.split('/').pop();
+
+    function renderRomLibrary() {
+      const grid = document.getElementById('gamesGrid');
+      const filtered = romLibrary.filter(r => !searchQuery ||
+        r.title.toLowerCase().includes(searchQuery) || r.sys.toLowerCase().includes(searchQuery));
+      if (!filtered.length) {
+        grid.innerHTML = '<div class="empty-state"><div class="emoji">😢</div><h3>No hay ROMs</h3></div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(r => `
+        <article class="game-card" onclick="openRom('${r.id}')">
+          <div class="game-thumb" style="background:${r.color}">${r.emoji}</div>
+          <div class="game-info">
+            <div class="game-title">${r.title}</div>
+            <span class="game-tag">${r.sys}</span>
+          </div>
+        </article>
+      `).join('');
     }
 
     function renderGames() {
       const grid = document.getElementById('gamesGrid');
+      if (currentCat === 'roms') return renderRomLibrary();
       const filtered = games.filter(g => {
         const tags = g.tags || [];
         const matchCat = currentCat === 'all' || g.cat === currentCat || tags.includes(currentCat);
@@ -635,6 +689,20 @@
       else if (id === 'sumo3d') startSumo3D(body);
       else if (id === 'trolljump') startTrollJump(body);
       else if (id === 'emulator') startEmulator(body);
+    }
+
+    function openRom(id) {
+      const rom = romLibrary.find(r => r.id === id);
+      if (!rom) return;
+      currentGame = 'rom:' + id;
+      document.getElementById('modalTitle').textContent = rom.title;
+      const body = document.getElementById('modalBody');
+      body.innerHTML = '';
+      body.style.position = '';
+      body.style.overflow = '';
+      document.getElementById('playModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      startRomPlayer(body, rom);
     }
 
     function closeModal() {
@@ -2665,6 +2733,92 @@
     // ========== PISO TRAIDOR (original troll platformer) ==========
     // Juego ORIGINAL inspirado en platformers troll.
     // NO es Level Devil. Level Devil © Unept / Level Devil B.V. → playleveldevil.com
+    // ========== ARRANQUE DE EmulatorJS (compartido) ==========
+    function bootEmulator(gameBox, core, gameUrl, gameName) {
+      gameBox.innerHTML = '<div id="emuPlayer" style="width:100%;height:100%;min-height:320px"></div>';
+
+      ['EJS_player','EJS_core','EJS_gameUrl','EJS_pathtodata','EJS_gameName','EJS_color','EJS_startOnLoaded','EJS_language'].forEach(k => {
+        try { delete window[k]; } catch (_) {}
+      });
+
+      window.EJS_player = '#emuPlayer';
+      window.EJS_core = core;
+      window.EJS_gameUrl = gameUrl;
+      window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+      window.EJS_gameName = gameName;
+      window.EJS_color = '#6c5ce7';
+      window.EJS_startOnLoaded = true;
+      window.EJS_language = 'es';
+
+      const old = document.getElementById('emuLoaderScript');
+      if (old) old.remove();
+      const s = document.createElement('script');
+      s.id = 'emuLoaderScript';
+      s.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+      s.onerror = () => {
+        gameBox.innerHTML = '<div style="padding:2rem;text-align:center;color:#fd79a8">No se pudo cargar el emulador (CDN bloqueado o sin internet).</div>';
+      };
+      document.body.appendChild(s);
+    }
+
+    // ========== REPRODUCTOR DE ROM DE LA LIBRERÍA ==========
+    // La ROM se descarga desde el repositorio del autor (retrobrews) al navegador
+    // y se ejecuta con EmulatorJS. Nada se sube a ningún servidor.
+    function startRomPlayer(body, rom) {
+      body.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;background:#0a0a12;position:relative;';
+      body.appendChild(wrap);
+
+      const url = romUrl(rom);
+      const ui = document.createElement('div');
+      ui.style.cssText = 'flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.2rem;gap:12px;text-align:center;overflow:auto;';
+      ui.innerHTML = `
+        <div style="font-size:2.8rem">${rom.emoji}</div>
+        <div style="font-weight:900;font-size:1.3rem">${rom.title}</div>
+        <div style="color:#00cec9;font-size:0.82rem;font-weight:700">${rom.sys} · ${rom.author}</div>
+        <div style="color:#a0a0c0;font-size:0.88rem;max-width:380px;line-height:1.45">${rom.desc}</div>
+        <button id="romPlay" style="background:linear-gradient(135deg,#6c5ce7,#00cec9);color:#fff;border:none;padding:0.75rem 1.7rem;border-radius:50px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:6px">▶ Jugar ahora</button>
+        <a id="romDownload" href="${url}" download="${romFileName(rom)}" style="color:#fdcb6e;font-size:0.82rem;font-weight:700;text-decoration:none">⬇ Descargar ROM (${romFileName(rom)})</a>
+        <div id="romStatus" style="color:#a0a0c0;font-size:0.78rem;min-height:1.2em"></div>
+        <div style="color:#a0a0c0;font-size:0.72rem;max-width:360px;line-height:1.4">
+          Homebrew publicado por su autor para descarga libre (colección retrobrews).
+        </div>
+      `;
+      wrap.appendChild(ui);
+
+      const gameBox = document.createElement('div');
+      gameBox.style.cssText = 'display:none;flex:1;min-height:0;width:100%;position:relative;';
+      wrap.appendChild(gameBox);
+
+      ui.querySelector('#romPlay').addEventListener('click', () => {
+        ui.style.display = 'none';
+        gameBox.style.display = 'block';
+        bootEmulator(gameBox, rom.core, url, rom.title);
+      });
+
+      // Descarga forzada como archivo: el atributo download no aplica cross-origin.
+      ui.querySelector('#romDownload').addEventListener('click', async e => {
+        e.preventDefault();
+        const status = ui.querySelector('#romStatus');
+        status.textContent = 'Descargando…';
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const blob = await res.blob();
+          const objUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = objUrl;
+          a.download = romFileName(rom);
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(objUrl), 10000);
+          status.textContent = 'ROM descargada ✔';
+        } catch (_) {
+          status.textContent = 'No se pudo descargar (sin internet o bloqueado).';
+        }
+      });
+    }
+
     // ========== EMULADOR RETRO (EmulatorJS · ROM del usuario) ==========
     function startEmulator(body) {
       body.innerHTML = '';
@@ -2704,7 +2858,7 @@
         <div id="emuFileName" style="color:#00cec9;font-size:0.82rem;font-weight:700;min-height:1.2em"></div>
         <button id="emuLaunch" disabled style="background:#2d3436;color:#888;border:none;padding:0.7rem 1.6rem;border-radius:50px;font-weight:800;font-family:inherit;cursor:not-allowed;margin-top:4px">▶ Jugar</button>
         <div style="color:#a0a0c0;font-size:0.75rem;max-width:360px;margin-top:8px;line-height:1.4">
-          Mira la sección <strong>Librería de ROMs legales</strong> abajo para homebrew gratis.<br>
+          Mira la categoría <strong>💿 ROMs</strong> para 20 juegos homebrew gratis listos para jugar.<br>
           <span style="color:#fd79a8">No uses ROMs comerciales que no poseas.</span>
         </div>
       `;
@@ -2772,30 +2926,7 @@
 
         ui.style.display = 'none';
         gameBox.style.display = 'block';
-        gameBox.innerHTML = '<div id="emuPlayer" style="width:100%;height:100%;min-height:320px"></div>';
-
-        ['EJS_player','EJS_core','EJS_gameUrl','EJS_pathtodata','EJS_gameName','EJS_color','EJS_startOnLoaded','EJS_language'].forEach(k => {
-          try { delete window[k]; } catch (_) {}
-        });
-
-        window.EJS_player = '#emuPlayer';
-        window.EJS_core = core;
-        window.EJS_gameUrl = objectUrl;
-        window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-        window.EJS_gameName = selectedFile.name;
-        window.EJS_color = '#6c5ce7';
-        window.EJS_startOnLoaded = true;
-        window.EJS_language = 'es';
-
-        const old = document.getElementById('emuLoaderScript');
-        if (old) old.remove();
-        const s = document.createElement('script');
-        s.id = 'emuLoaderScript';
-        s.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
-        s.onerror = () => {
-          gameBox.innerHTML = '<div style="padding:2rem;text-align:center;color:#fd79a8">No se pudo cargar el emulador (CDN bloqueado o sin internet).</div>';
-        };
-        document.body.appendChild(s);
+        bootEmulator(gameBox, core, objectUrl, selectedFile.name);
       });
     }
 
