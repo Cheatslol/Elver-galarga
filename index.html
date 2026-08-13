@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob: https://cdnjs.cloudflare.com https://cdn.emulatorjs.org; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.emulatorjs.org; font-src 'self' data: https://fonts.gstatic.com https://cdn.emulatorjs.org; img-src 'self' data: blob: https://cdn.emulatorjs.org; media-src 'self' data: blob:; connect-src 'self' blob: data: https://cdn.emulatorjs.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title> - Poki no es</title>
   <meta name="description" content="El portal de juegos de El Vergalarga. Juegos que funcionan aunque el colegio bloquee Poki." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -550,6 +552,10 @@
     let currentGame = null;
     let animId = null;
 
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+    }
+
     function catLabel(cat) {
       return { arcade:'Arcade', puzzle:'Puzzle', accion:'Acción', clasicos:'Clásicos', multijugador:'Multijugador', '3d':'3D', emulador:'Emulador' }[cat] || cat;
     }
@@ -567,17 +573,20 @@
         return;
       }
       grid.innerHTML = filtered.map(g => `
-        <article class="game-card" onclick="openGame('${g.id}')">
+        <article class="game-card" data-game-id="${escapeHtml(g.id)}">
           ${g.badge === 'new' ? '<span class="badge-new">Nuevo</span>' : ''}
           ${g.badge === 'hot' ? '<span class="badge-hot">🔥 Hot</span>' : ''}
-          <div class="game-thumb" style="background:${g.color}">${g.img ? '<img src="'+g.img+'" alt="" style="width:72%;height:72%;object-fit:contain;pointer-events:none;border-radius:8px">' : g.emoji}</div>
+          <div class="game-thumb" style="background:${escapeHtml(g.color)}">${g.img ? '<img src="'+escapeHtml(g.img)+'" alt="" style="width:72%;height:72%;object-fit:contain;pointer-events:none;border-radius:8px">' : escapeHtml(g.emoji)}</div>
           <div class="game-info">
-            <div class="game-title">${g.title}</div>
-            <span class="game-tag">${catLabel(g.cat)}</span>
-            ${(g.tags||[]).map(t => `<span class="game-tag" style="background:rgba(0,206,201,0.22);color:#00cec9;margin-left:4px;">${catLabel(t)}</span>`).join('')}
+            <div class="game-title">${escapeHtml(g.title)}</div>
+            <span class="game-tag">${escapeHtml(catLabel(g.cat))}</span>
+            ${(g.tags||[]).map(t => `<span class="game-tag" style="background:rgba(0,206,201,0.22);color:#00cec9;margin-left:4px;">${escapeHtml(catLabel(t))}</span>`).join('')}
           </div>
         </article>
       `).join('');
+      grid.querySelectorAll('.game-card[data-game-id]').forEach(card => {
+        card.addEventListener('click', () => openGame(card.dataset.gameId));
+      });
     }
 
     function filterCategory(cat) {
@@ -1891,11 +1900,15 @@
         startRocket25D(wrap, overlay, scoreEl, hintEl);
       };
 
-      function loadScript(src, ms) {
+      function loadScript(src, integrity, ms) {
         return Promise.race([
           new Promise((resolve, reject) => {
             if (window.THREE) return resolve();
-            const s = document.createElement('script'); s.src = src; s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
+            const s = document.createElement('script');
+            s.src = src;
+            s.integrity = integrity;
+            s.crossOrigin = 'anonymous';
+            s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
           }),
           new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
         ]);
@@ -1906,7 +1919,11 @@
         overlay.querySelector('#rlStart').disabled = true;
         status.textContent = 'Cargando motor 3D...';
         try {
-          await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 4000);
+          await loadScript(
+            'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+            'sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu',
+            4000
+          );
           startRocket3D(wrap, overlay, scoreEl, hintEl);
         } catch (err) {
           status.textContent = '3D bloqueado por la proxy del cole · usando modo local...';
@@ -2609,7 +2626,7 @@
         window.EJS_player = '#emuPlayer';
         window.EJS_core = core;
         window.EJS_gameUrl = objectUrl;
-        window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+        window.EJS_pathtodata = 'https://cdn.emulatorjs.org/4.2.3/data/';
         window.EJS_gameName = selectedFile.name;
         window.EJS_color = '#6c5ce7';
         window.EJS_startOnLoaded = true;
@@ -2619,7 +2636,9 @@
         if (old) old.remove();
         const s = document.createElement('script');
         s.id = 'emuLoaderScript';
-        s.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+        s.src = 'https://cdn.emulatorjs.org/4.2.3/data/loader.js';
+        s.integrity = 'sha384-CwARP2ej7UlPGk5E0IPt89lxjdb3t7zStyLR6PL7Sg4xzHSrvXh/R4vbb4PrSv6U';
+        s.crossOrigin = 'anonymous';
         s.onerror = () => {
           gameBox.innerHTML = '<div style="padding:2rem;text-align:center;color:#fd79a8">No se pudo cargar el emulador (CDN bloqueado o sin internet).</div>';
         };
