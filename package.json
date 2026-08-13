@@ -1,0 +1,8 @@
+{
+  "name": "elver-galarga",
+  "private": true,
+  "description": "Sitio de juegos en un solo index.html",
+  "scripts": {
+    "test": "node --test tests/"
+  }
+}
