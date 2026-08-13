@@ -145,6 +145,24 @@
     .badge-hot { background: #e17055; }
     .badge-new { background: var(--accent2); }
 
+    /* Tarjetas de enlaces externos (recomendados / ROMs) */
+    .link-section { max-width: 1400px; margin: 2rem auto 0; padding: 0 1.5rem; }
+    .link-note { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; max-width: 780px; line-height: 1.5; }
+    .link-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .link-card {
+      flex: 1; min-width: 220px; max-width: 320px;
+      background: var(--bg-card); border-radius: var(--radius); padding: 1.1rem;
+      text-decoration: none; color: var(--text); display: block;
+      border: 1px solid transparent; transition: transform 0.2s;
+    }
+    .link-card.accent { border-color: rgba(0,206,201,0.35); }
+    .link-card.pink { border-color: rgba(253,121,168,0.35); }
+    .link-card.primary { border-color: rgba(108,92,231,0.35); }
+    .link-card-icon { font-size: 2rem; margin-bottom: 0.4rem; }
+    .link-card-title { font-weight: 800; }
+    .link-card-desc { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.2rem; }
+    .link-card-cta { margin-top: 0.6rem; font-size: 0.78rem; color: var(--accent); font-weight: 700; }
+
     footer {
       margin-top: 3.5rem; padding: 2rem 1.5rem; background: #0a0a14;
       border-top: 1px solid rgba(255,255,255,0.05); text-align: center;
@@ -289,213 +307,189 @@
     <div class="games-grid" id="gamesGrid"></div>
   </main>
 
-  <section style="max-width:1400px;margin:2rem auto 0;padding:0 1.5rem;">
+  <section class="link-section">
     <div class="section-header"><h2>🔗 Recomendados (externos · Run game)</h2></div>
-    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1rem;max-width:720px;">
+    <p class="link-note">
       Fan games y demos oficiales. Al tocar se abre la página del creador en pestaña nueva.
       Solo links con <strong>Run game / Play in browser</strong> — nada de descargas.
     </p>
-    <div style="display:flex;flex-wrap:wrap;gap:1rem;">
+    <div class="link-grid">
 
       <!-- Geometry Dash -->
-      <a href="https://geometrydash.com" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;border:1px solid rgba(0,206,201,0.35);">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">◆</div>
-        <div style="font-weight:800;">Geometry Dash (Demo Oficial)</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© RobTop Games · Stereo Madness en el navegador (oficial).</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Jugar demo oficial ↗</div>
+      <a class="link-card accent" href="https://geometrydash.com" target="_blank" rel="noopener">
+        <div class="link-card-icon">◆</div>
+        <div class="link-card-title">Geometry Dash (Demo Oficial)</div>
+        <div class="link-card-desc">© RobTop Games · Stereo Madness en el navegador (oficial).</div>
+        <div class="link-card-cta">▶ Jugar demo oficial ↗</div>
       </a>
 
-      <a href="https://hemisfera.itch.io/geometry-dash-rush" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🟩</div>
-        <div style="font-weight:800;">Geometry Dash Rush</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Hemisféra · Fan game HTML5, Run game directo.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game en itch.io ↗</div>
+      <a class="link-card" href="https://hemisfera.itch.io/geometry-dash-rush" target="_blank" rel="noopener">
+        <div class="link-card-icon">🟩</div>
+        <div class="link-card-title">Geometry Dash Rush</div>
+        <div class="link-card-desc">© Hemisféra · Fan game HTML5, Run game directo.</div>
+        <div class="link-card-cta">▶ Run game en itch.io ↗</div>
       </a>
 
-      <a href="https://koteee.itch.io/gbdash" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🎮</div>
-        <div style="font-weight:800;">GB Dash</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© koteee · Demake estilo Game Boy, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game en itch.io ↗</div>
+      <a class="link-card" href="https://koteee.itch.io/gbdash" target="_blank" rel="noopener">
+        <div class="link-card-icon">🎮</div>
+        <div class="link-card-title">GB Dash</div>
+        <div class="link-card-desc">© koteee · Demake estilo Game Boy, HTML5.</div>
+        <div class="link-card-cta">▶ Run game en itch.io ↗</div>
       </a>
 
-      <a href="https://creepersaur.itch.io/gd" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🟦</div>
-        <div style="font-weight:800;">GD Godot Remake</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© creepersaur · Remake en Godot, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game en itch.io ↗</div>
+      <a class="link-card" href="https://creepersaur.itch.io/gd" target="_blank" rel="noopener">
+        <div class="link-card-icon">🟦</div>
+        <div class="link-card-title">GD Godot Remake</div>
+        <div class="link-card-desc">© creepersaur · Remake en Godot, HTML5.</div>
+        <div class="link-card-cta">▶ Run game en itch.io ↗</div>
       </a>
 
       <!-- FNAF NES y similares -->
-      <a href="https://endoblance.itch.io/fnafnes" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;border:1px solid rgba(253,121,168,0.35);">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🐻</div>
-        <div style="font-weight:800;">Five Nights at Freddy's NES</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© ENDOBLANCE · FNAF estilo NES, HTML5 + jumpscares.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game en itch.io ↗</div>
+      <a class="link-card pink" href="https://endoblance.itch.io/fnafnes" target="_blank" rel="noopener">
+        <div class="link-card-icon">🐻</div>
+        <div class="link-card-title">Five Nights at Freddy's NES</div>
+        <div class="link-card-desc">© ENDOBLANCE · FNAF estilo NES, HTML5 + jumpscares.</div>
+        <div class="link-card-cta">▶ Run game en itch.io ↗</div>
       </a>
 
-      <a href="https://publishinggoblin.itch.io/clearing-your-name" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🐻</div>
-        <div style="font-weight:800;">Clearing Your Name</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© PublishingGoblin · Fangame FNAF, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game en itch.io ↗</div>
+      <a class="link-card" href="https://publishinggoblin.itch.io/clearing-your-name" target="_blank" rel="noopener">
+        <div class="link-card-icon">🐻</div>
+        <div class="link-card-title">Clearing Your Name</div>
+        <div class="link-card-desc">© PublishingGoblin · Fangame FNAF, HTML5.</div>
+        <div class="link-card-cta">▶ Run game en itch.io ↗</div>
       </a>
 
-      <a href="https://amneziak.itch.io/five-nights-at-tally-hall" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🎭</div>
-        <div style="font-weight:800;">Five Nights at Tally Hall</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© am · Survival horror estilo FNAF, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game en itch.io ↗</div>
+      <a class="link-card" href="https://amneziak.itch.io/five-nights-at-tally-hall" target="_blank" rel="noopener">
+        <div class="link-card-icon">🎭</div>
+        <div class="link-card-title">Five Nights at Tally Hall</div>
+        <div class="link-card-desc">© am · Survival horror estilo FNAF, HTML5.</div>
+        <div class="link-card-cta">▶ Run game en itch.io ↗</div>
       </a>
 
       <!-- TERROR / HORROR (HTML5 Run game) -->
-      <a href="https://tykenn.itch.io/trees-hate-you" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🌲</div>
-        <div style="font-weight:800;">Trees Hate You</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Tykenn · Horror/comedia, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://tykenn.itch.io/trees-hate-you" target="_blank" rel="noopener">
+        <div class="link-card-icon">🌲</div>
+        <div class="link-card-title">Trees Hate You</div>
+        <div class="link-card-desc">© Tykenn · Horror/comedia, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://donitz.itch.io/burger-frights" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🍔</div>
-        <div style="font-weight:800;">Burger & Frights</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Donitz · Horror PS1, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://donitz.itch.io/burger-frights" target="_blank" rel="noopener">
+        <div class="link-card-icon">🍔</div>
+        <div class="link-card-title">Burger & Frights</div>
+        <div class="link-card-desc">© Donitz · Horror PS1, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://adayofjoy.itch.io/exhibit-of-sorrows" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🎪</div>
-        <div style="font-weight:800;">Exhibit of Sorrows</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© adayofjoy · Horror de circo, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://adayofjoy.itch.io/exhibit-of-sorrows" target="_blank" rel="noopener">
+        <div class="link-card-icon">🎪</div>
+        <div class="link-card-title">Exhibit of Sorrows</div>
+        <div class="link-card-desc">© adayofjoy · Horror de circo, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://qwook.itch.io/last-seen-online" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">💻</div>
-        <div style="font-weight:800;">last seen online</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© qwook · Horror psicológico PC, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://qwook.itch.io/last-seen-online" target="_blank" rel="noopener">
+        <div class="link-card-icon">💻</div>
+        <div class="link-card-title">last seen online</div>
+        <div class="link-card-desc">© qwook · Horror psicológico PC, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://pixelgrid-studios.itch.io/darkroom-panic" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🌑</div>
-        <div style="font-weight:800;">Darkroom Panic</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© PixelGrid · Survival horror, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://pixelgrid-studios.itch.io/darkroom-panic" target="_blank" rel="noopener">
+        <div class="link-card-icon">🌑</div>
+        <div class="link-card-title">Darkroom Panic</div>
+        <div class="link-card-desc">© PixelGrid · Survival horror, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://zgamestudio.itch.io/horror-hotel" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🏨</div>
-        <div style="font-weight:800;">Horror Hotel</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© ZGameStudio · Escape horror 1ª persona, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://zgamestudio.itch.io/horror-hotel" target="_blank" rel="noopener">
+        <div class="link-card-icon">🏨</div>
+        <div class="link-card-title">Horror Hotel</div>
+        <div class="link-card-desc">© ZGameStudio · Escape horror 1ª persona, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://fodderr.itch.io/horror-crawler" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🩸</div>
-        <div style="font-weight:800;">Horror Crawler</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Fodder · Laberinto horror retro, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://fodderr.itch.io/horror-crawler" target="_blank" rel="noopener">
+        <div class="link-card-icon">🩸</div>
+        <div class="link-card-title">Horror Crawler</div>
+        <div class="link-card-desc">© Fodder · Laberinto horror retro, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://emankcin01.itch.io/the-backrooms" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🟨</div>
-        <div style="font-weight:800;">THE BACKROOMS</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Emankcin01 · Backrooms psicológicos, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://emankcin01.itch.io/the-backrooms" target="_blank" rel="noopener">
+        <div class="link-card-icon">🟨</div>
+        <div class="link-card-title">THE BACKROOMS</div>
+        <div class="link-card-desc">© Emankcin01 · Backrooms psicológicos, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://tenevik.itch.io/gigahrush" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🏢</div>
-        <div style="font-weight:800;">GIGAH|RUSH</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Tenevik · Survival horror en bloque soviético, HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Run game ↗</div>
+      <a class="link-card" href="https://tenevik.itch.io/gigahrush" target="_blank" rel="noopener">
+        <div class="link-card-icon">🏢</div>
+        <div class="link-card-title">GIGAH|RUSH</div>
+        <div class="link-card-desc">© Tenevik · Survival horror en bloque soviético, HTML5.</div>
+        <div class="link-card-cta">▶ Run game ↗</div>
       </a>
 
-      <a href="https://playleveldevil.com/" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;border:1px solid rgba(253,121,168,0.4);">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">😈</div>
-        <div style="font-weight:800;">Level Devil</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Unept · El platformer troll (pisos que se caen, trampas). HTML5.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Jugar oficial ↗</div>
+      <a class="link-card pink" href="https://playleveldevil.com/" target="_blank" rel="noopener">
+        <div class="link-card-icon">😈</div>
+        <div class="link-card-title">Level Devil</div>
+        <div class="link-card-desc">© Unept · El platformer troll (pisos que se caen, trampas). HTML5.</div>
+        <div class="link-card-cta">▶ Jugar oficial ↗</div>
       </a>
 
-      <a href="https://totaljerkface.com/happy_wheels.tjf" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;transition:transform .2s;border:1px solid rgba(253,121,168,0.35);">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">♿</div>
-        <div style="font-weight:800;">Happy Wheels</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">© Fancy Force · Oficial en navegador (ragdoll + sangre).</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Jugar oficial ↗</div>
+      <a class="link-card pink" href="https://totaljerkface.com/happy_wheels.tjf" target="_blank" rel="noopener">
+        <div class="link-card-icon">♿</div>
+        <div class="link-card-title">Happy Wheels</div>
+        <div class="link-card-desc">© Fancy Force · Oficial en navegador (ragdoll + sangre).</div>
+        <div class="link-card-cta">▶ Jugar oficial ↗</div>
       </a>
 
     </div>
   </section>
 
   <!-- LIBRERÍA LEGAL DE ROMs (homebrew / dominio público) -->
-  <section style="max-width:1400px;margin:2.5rem auto 0;padding:0 1.5rem;" id="roms-legales">
+  <section class="link-section" id="roms-legales">
     <div class="section-header"><h2>💾 Librería de ROMs legales (Rooms)</h2></div>
-    <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1rem;max-width:780px;line-height:1.5">
+    <p class="link-note">
       Solo enlaces a <strong>homebrew, dominio público y freeware</strong>. No hay ROMs comerciales.
       Descarga la ROM y ábrela en <strong>Emulador Retro</strong> (categoría Emulador).
     </p>
-    <div style="display:flex;flex-wrap:wrap;gap:1rem;">
-      <a href="https://itch.io/games/free/tag-homebrew/tag-nes-rom" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;border:1px solid rgba(108,92,231,0.35);">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🎮</div>
-        <div style="font-weight:800;">Homebrew NES · itch.io</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">Juegos nuevos para NES con ROM gratis.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Abrir ↗</div>
+    <div class="link-grid">
+      <a class="link-card primary" href="https://itch.io/games/free/tag-homebrew/tag-nes-rom" target="_blank" rel="noopener">
+        <div class="link-card-icon">🎮</div>
+        <div class="link-card-title">Homebrew NES · itch.io</div>
+        <div class="link-card-desc">Juegos nuevos para NES con ROM gratis.</div>
+        <div class="link-card-cta">▶ Abrir ↗</div>
       </a>
-      <a href="https://itch.io/games/free/tag-homebrew/tag-game-boy" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🟩</div>
-        <div style="font-weight:800;">Homebrew Game Boy</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">GB / GBC homebrew legales.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Abrir ↗</div>
+      <a class="link-card" href="https://itch.io/games/free/tag-homebrew/tag-game-boy" target="_blank" rel="noopener">
+        <div class="link-card-icon">🟩</div>
+        <div class="link-card-title">Homebrew Game Boy</div>
+        <div class="link-card-desc">GB / GBC homebrew legales.</div>
+        <div class="link-card-cta">▶ Abrir ↗</div>
       </a>
-      <a href="https://www.zophar.net/pdroms.html" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">📜</div>
-        <div style="font-weight:800;">Zophar Public Domain</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">ROMs de dominio público por sistema.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Abrir ↗</div>
+      <a class="link-card" href="https://www.zophar.net/pdroms.html" target="_blank" rel="noopener">
+        <div class="link-card-icon">📜</div>
+        <div class="link-card-title">Zophar Public Domain</div>
+        <div class="link-card-desc">ROMs de dominio público por sistema.</div>
+        <div class="link-card-cta">▶ Abrir ↗</div>
       </a>
-      <a href="https://archive.org/details/nes-romhacking.net-homebrew" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🗄️</div>
-        <div style="font-weight:800;">NES Homebrew (Archive)</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">Pack homebrew de Romhacking.net.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Archive.org ↗</div>
+      <a class="link-card" href="https://archive.org/details/nes-romhacking.net-homebrew" target="_blank" rel="noopener">
+        <div class="link-card-icon">🗄️</div>
+        <div class="link-card-title">NES Homebrew (Archive)</div>
+        <div class="link-card-desc">Pack homebrew de Romhacking.net.</div>
+        <div class="link-card-cta">▶ Archive.org ↗</div>
       </a>
-      <a href="https://archive.org/details/gbx-homebrew" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">📦</div>
-        <div style="font-weight:800;">GB / GBC Homebrew</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">Colección homebrew de itch.io.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ Archive.org ↗</div>
+      <a class="link-card" href="https://archive.org/details/gbx-homebrew" target="_blank" rel="noopener">
+        <div class="link-card-icon">📦</div>
+        <div class="link-card-title">GB / GBC Homebrew</div>
+        <div class="link-card-desc">Colección homebrew de itch.io.</div>
+        <div class="link-card-cta">▶ Archive.org ↗</div>
       </a>
-      <a href="https://github.com/retrobrews/nes-games" target="_blank" rel="noopener"
-         style="flex:1;min-width:220px;max-width:320px;background:var(--bg-card);border-radius:var(--radius);padding:1.1rem;text-decoration:none;color:var(--text);display:block;">
-        <div style="font-size:2rem;margin-bottom:0.4rem;">🐙</div>
-        <div style="font-weight:800;">retrobrews NES</div>
-        <div style="color:var(--text-muted);font-size:0.82rem;margin-top:0.2rem;">Lista de homebrew con permiso de distribución.</div>
-        <div style="margin-top:0.6rem;font-size:0.78rem;color:var(--accent);font-weight:700;">▶ GitHub ↗</div>
+      <a class="link-card" href="https://github.com/retrobrews/nes-games" target="_blank" rel="noopener">
+        <div class="link-card-icon">🐙</div>
+        <div class="link-card-title">retrobrews NES</div>
+        <div class="link-card-desc">Lista de homebrew con permiso de distribución.</div>
+        <div class="link-card-cta">▶ GitHub ↗</div>
       </a>
     </div>
     <p style="color:var(--text-muted);font-size:0.78rem;margin-top:1.2rem;max-width:720px;">
@@ -600,6 +594,16 @@
     });
 
     // ========== ABRIR / CERRAR ==========
+    // id del juego -> función que lo arranca dentro del modal
+    const gameStarters = {
+      snake: startSnake, '2048': start2048, flappy: startFlappy, breakout: startBreakout,
+      pong: startPong, memory: startMemory, tictactoe: startTicTacToe, runner: startRunner,
+      clicker: startClicker, minesweeper: startMinesweeper, tetris: startTetris, dodge: startDodge,
+      geodash: startGeoDash, rocket: startRocket, invaders: startInvaders, airhockey: startAirHockey,
+      connect4: startConnect4, basketball: startBasketball, platformer: startPlatformer,
+      sumo3d: startSumo3D, trolljump: startTrollJump, emulator: startEmulator
+    };
+
     function openGame(id) {
       const game = games.find(g => g.id === id);
       if (!game) return;
@@ -613,34 +617,15 @@
       document.body.style.overflow = 'hidden';
 
       // Lanzar el juego correspondiente
-      if (id === 'snake') startSnake(body);
-      else if (id === '2048') start2048(body);
-      else if (id === 'flappy') startFlappy(body);
-      else if (id === 'breakout') startBreakout(body);
-      else if (id === 'pong') startPong(body);
-      else if (id === 'memory') startMemory(body);
-      else if (id === 'tictactoe') startTicTacToe(body);
-      else if (id === 'runner') startRunner(body);
-      else if (id === 'clicker') startClicker(body);
-      else if (id === 'minesweeper') startMinesweeper(body);
-      else if (id === 'tetris') startTetris(body);
-      else if (id === 'dodge') startDodge(body);
-      else if (id === 'geodash') startGeoDash(body);
-      else if (id === 'rocket') startRocket(body);
-      else if (id === 'invaders') startInvaders(body);
-      else if (id === 'airhockey') startAirHockey(body);
-      else if (id === 'connect4') startConnect4(body);
-      else if (id === 'basketball') startBasketball(body);
-      else if (id === 'platformer') startPlatformer(body);
-      else if (id === 'sumo3d') startSumo3D(body);
-      else if (id === 'trolljump') startTrollJump(body);
-      else if (id === 'emulator') startEmulator(body);
+      const start = gameStarters[id];
+      if (start) start(body);
     }
 
     function closeModal() {
       document.getElementById('playModal').classList.remove('open');
       document.body.style.overflow = '';
       if (animId) { cancelAnimationFrame(animId); animId = null; }
+      clearGameIntervals();
       window.onkeydown = null;
       window.onkeyup = null;
       const emuScript = document.getElementById('emuLoaderScript');
@@ -655,14 +640,209 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
     // ========== UTILIDADES CANVAS ==========
+    // Crea el canvas del juego y devuelve { canvas, ctx } listos para dibujar
     function makeCanvas(body, w = 400, h = 500) {
       const canvas = document.createElement('canvas');
       canvas.id = 'gameCanvas';
       canvas.width = w;
       canvas.height = h;
       body.appendChild(canvas);
-      return canvas;
+      return { canvas, ctx: canvas.getContext('2d') };
     }
+
+    // Coordenadas del puntero/dedo en píxeles del canvas
+    function canvasPoint(canvas, e, w, h) {
+      const t = e.touches && e.touches[0] ? e.touches[0] : (e.changedTouches && e.changedTouches[0]) || e;
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (t.clientX - rect.left) * (w / rect.width),
+        y: (t.clientY - rect.top) * (h / rect.height)
+      };
+    }
+
+    // Estado de teclas compartido: keys[e.key] = true/false
+    function bindKeys(keys, opts) {
+      opts = opts || {};
+      const prevent = opts.prevent || ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '];
+      window.onkeydown = e => {
+        keys[e.key] = true;
+        if (opts.onDown) opts.onDown(e);
+        if (prevent.includes(e.key)) e.preventDefault();
+      };
+      window.onkeyup = e => {
+        keys[e.key] = false;
+        if (opts.onUp) opts.onUp(e);
+      };
+    }
+
+    // Mapea teclas a acciones. Las claves pueden ser listas: 'ArrowLeft,a,A'
+    // y se comparan con e.key y con e.code (p.ej. 'Space').
+    function bindKeyActions(actions, opts) {
+      opts = opts || {};
+      const map = {};
+      Object.keys(actions).forEach(spec => spec.split(',').forEach(key => { map[key] = actions[spec]; }));
+      window.onkeydown = e => {
+        const fn = map[e.key] || map[e.code];
+        if (!fn) return;
+        if (!opts.allowDefault) e.preventDefault();
+        fn(e);
+      };
+      window.onkeyup = null;
+    }
+
+    // Arrastrar/deslizar sobre el canvas (palas, cestas…)
+    function addPointerDrag(canvas, w, h, onMove) {
+      const move = e => {
+        e.preventDefault();
+        onMove(canvasPoint(canvas, e, w, h));
+      };
+      canvas.addEventListener('mousemove', move);
+      canvas.addEventListener('touchstart', move, { passive: false });
+      canvas.addEventListener('touchmove', move, { passive: false });
+    }
+
+    // Gesto de deslizar en 4 direcciones sobre un elemento
+    function addSwipe(el, dirs, minDist) {
+      const min = minDist || 24;
+      let start = null;
+      el.addEventListener('touchstart', e => {
+        if (e.touches[0]) start = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }, { passive: true });
+      el.addEventListener('touchend', e => {
+        if (!start || !e.changedTouches[0]) return;
+        const dx = e.changedTouches[0].clientX - start.x;
+        const dy = e.changedTouches[0].clientY - start.y;
+        start = null;
+        if (Math.abs(dx) < min && Math.abs(dy) < min) return;
+        if (Math.abs(dx) > Math.abs(dy)) (dx > 0 ? dirs.right : dirs.left)();
+        else (dy > 0 ? dirs.down : dirs.up)();
+      }, { passive: true });
+    }
+
+    // Bucle de 16ms para movimiento continuo (botones táctiles mantenidos)
+    const gameIntervals = [];
+    function startHoldLoop(gameId, fn) {
+      const id = setInterval(() => {
+        if (currentGame !== gameId) { clearInterval(id); return; }
+        fn();
+      }, 16);
+      gameIntervals.push(id);
+      return id;
+    }
+    function clearGameIntervals() {
+      while (gameIntervals.length) clearInterval(gameIntervals.pop());
+    }
+
+    // Texto de HUD sobre el canvas
+    function drawHudText(ctx, text, x, y, opts) {
+      opts = opts || {};
+      ctx.fillStyle = opts.color || '#fff';
+      ctx.font = opts.font || 'bold 16px Nunito';
+      ctx.textAlign = opts.align || 'left';
+      ctx.fillText(text, x, y);
+      ctx.textAlign = 'left';
+    }
+
+    // Panel oscuro centrado (game over / pausa / intro) dibujado en el canvas
+    function drawCanvasPanel(ctx, w, h, opts) {
+      ctx.fillStyle = opts.bg || 'rgba(0,0,0,0.7)';
+      ctx.fillRect(0, 0, w, h);
+      ctx.textAlign = 'center';
+      let y = opts.y || h / 2 - 10;
+      ctx.fillStyle = opts.titleColor || '#fff';
+      ctx.font = opts.titleFont || 'bold 26px Nunito';
+      ctx.fillText(opts.title, w / 2, y);
+      (opts.lines || []).forEach(line => {
+        y += opts.lineGap || 28;
+        const isObj = typeof line === 'object' && line !== null;
+        ctx.fillStyle = (isObj && line.color) || '#fff';
+        ctx.font = (isObj && line.font) || opts.lineFont || '16px Nunito';
+        ctx.fillText(isObj ? line.text : line, w / 2, y);
+      });
+      ctx.textAlign = 'left';
+    }
+
+    // Contenedor centrado para los juegos hechos con DOM (2048, memoria, etc.)
+    function makeCenteredWrap(body, opts) {
+      opts = opts || {};
+      body.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = `display:flex;flex-direction:column;align-items:center;gap:${opts.gap || '12px'};padding:${opts.padding || '16px'};width:100%;height:100%;justify-content:center;`;
+      body.appendChild(wrap);
+      return wrap;
+    }
+
+    // Rejilla de celdas para los tableros DOM
+    function makeGrid(cols, cell, gap, extraStyle) {
+      const grid = document.createElement('div');
+      grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},${cell});gap:${gap};${extraStyle || ''}`;
+      return grid;
+    }
+
+    // Botón de acción (reiniciar / jugar de nuevo)
+    function makeButton(label, onClick, style) {
+      const btn = document.createElement('button');
+      btn.textContent = label;
+      btn.style.cssText = `background:${style || 'linear-gradient(135deg,#6c5ce7,#00cec9)'};color:#fff;border:none;padding:0.7rem 1.5rem;border-radius:50px;font-weight:800;cursor:pointer;font-family:inherit;`;
+      btn.onclick = onClick;
+      return btn;
+    }
+
+    // Etiqueta de texto simple dentro de un wrap DOM
+    function makeLabel(text, style) {
+      const el = document.createElement('div');
+      el.style.cssText = style || 'font-weight:800;';
+      el.textContent = text;
+      return el;
+    }
+
+    // Carcasa común de los juegos "arena" (Rocket League .io, Sumo 3D):
+    // wrap + portada con botón + marcador + pista de controles
+    function makeArenaShell(body, opts) {
+      body.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = `width:100%;height:100%;position:relative;background:${opts.bg};`;
+      body.appendChild(wrap);
+      const overlay = document.createElement('div');
+      overlay.style.cssText = `position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;background:linear-gradient(160deg,${opts.bg},${opts.bg2});color:#fff;text-align:center;padding:20px;`;
+      overlay.innerHTML = `<div style="font-size:3rem;margin-bottom:8px">${opts.icon}</div>`
+        + `<div style="font-weight:900;font-size:1.5rem;margin-bottom:6px">${opts.title}</div>`
+        + `<div style="color:#a0a0c0;font-size:0.9rem;max-width:320px;margin-bottom:18px;line-height:1.4">${opts.desc}</div>`
+        + `<button id="arenaStart" style="background:${opts.btnBg};color:#fff;border:none;padding:12px 28px;border-radius:50px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit">¡Jugar!</button>`
+        + (opts.extraHtml || '')
+        + '<div id="arenaStatus" style="margin-top:12px;color:#a0a0c0;font-size:0.8rem"></div>';
+      wrap.appendChild(overlay);
+      const scoreEl = document.createElement('div');
+      scoreEl.style.cssText = 'position:absolute;top:10px;left:0;right:0;text-align:center;z-index:4;font-weight:900;font-size:1.6rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);pointer-events:none;display:none';
+      scoreEl.textContent = '0 - 0';
+      wrap.appendChild(scoreEl);
+      const hintEl = document.createElement('div');
+      hintEl.style.cssText = 'position:absolute;bottom:8px;left:0;right:0;text-align:center;z-index:4;font-size:0.75rem;color:rgba(255,255,255,0.55);pointer-events:none;display:none';
+      hintEl.textContent = opts.hint || '';
+      wrap.appendChild(hintEl);
+      return {
+        wrap, overlay, scoreEl, hintEl,
+        startBtn: overlay.querySelector('#arenaStart'),
+        statusEl: overlay.querySelector('#arenaStatus'),
+        // Oculta la portada y muestra marcador + pista
+        enterGame(hint) {
+          overlay.style.display = 'none';
+          scoreEl.style.display = 'block';
+          hintEl.style.display = 'block';
+          if (hint) hintEl.textContent = hint;
+        }
+      };
+    }
+
+    // Canvas a pantalla completa dentro de un wrap de arena
+    function makeArenaCanvas(wrap, w, h, bg) {
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.style.cssText = `width:100%;height:100%;display:block;background:${bg}`;
+      wrap.appendChild(canvas);
+      return { canvas, ctx: canvas.getContext('2d') };
+    }
+
     function makeOverlay(body, title, text, btnText, onStart) {
       const ov = document.createElement('div');
       ov.className = 'game-overlay';
@@ -696,14 +876,36 @@
       return b;
     }
 
+    // Estilos compartidos de los paneles táctiles
+    const PAD_STYLE = 'position:absolute;left:0;right:0;bottom:20px;z-index:20;display:flex;justify-content:space-between;align-items:flex-end;padding:8px 14px;padding-bottom:max(8px,env(safe-area-inset-bottom));pointer-events:none;gap:8px;';
+    const DPAD_STYLE = 'display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;pointer-events:auto;';
+    const ACTION_STYLE = 'width:68px;height:68px;border-radius:50%;background:rgba(0,206,201,0.4);border-color:rgba(0,206,201,0.7);';
+    const ACTION2_STYLE = 'width:56px;height:56px;border-radius:50%;background:rgba(108,92,231,0.45);';
+
+    // Contenedor inferior de un panel táctil
+    function makePadContainer(wrap) {
+      ensureGameWrap(wrap);
+      const pad = document.createElement('div');
+      pad.className = 'touch-pad';
+      pad.style.cssText = PAD_STYLE;
+      return pad;
+    }
+
+    // Cruceta de 4 direcciones; cada dir es un botón ya creado (o null)
+    function makeDpadGrid(up, left, down, right) {
+      const dpad = document.createElement('div');
+      dpad.style.cssText = DPAD_STYLE;
+      const slot = el => dpad.appendChild(el || document.createElement('div'));
+      slot(null); slot(up); slot(null);
+      slot(left); slot(down); slot(right);
+      return dpad;
+    }
+
     // Panel de controles táctiles reutilizable (objeto keys)
     function addTouchPad(wrap, keys, opts) {
       opts = opts || {};
       if (!isTouchDevice && !opts.forceShow) return null;
-      ensureGameWrap(wrap);
-      const pad = document.createElement('div');
-      pad.className = 'touch-pad';
-      pad.style.cssText = 'position:absolute;left:0;right:0;bottom:20px;z-index:20;display:flex;justify-content:space-between;align-items:flex-end;padding:8px 14px;padding-bottom:max(8px,env(safe-area-inset-bottom));pointer-events:none;gap:8px;';
+      const pad = makePadContainer(wrap);
       function keyBtn(label, key, extraStyle) {
         return makeTouchBtn(label,
           () => { keys[key] = true; },
@@ -711,34 +913,19 @@
           extraStyle
         );
       }
-      if (opts.left) {
-        const dpad = document.createElement('div');
-        dpad.style.cssText = 'display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;pointer-events:auto;';
-        dpad.appendChild(document.createElement('div'));
-        dpad.appendChild(keyBtn('▲', opts.left.up));
-        dpad.appendChild(document.createElement('div'));
-        dpad.appendChild(keyBtn('◀', opts.left.leftKey || opts.left.left));
-        dpad.appendChild(keyBtn('▼', opts.left.down));
-        dpad.appendChild(keyBtn('▶', opts.left.rightKey || opts.left.right));
-        pad.appendChild(dpad);
-      } else {
-        pad.appendChild(document.createElement('div'));
+      function keyDpad(side) {
+        return makeDpadGrid(
+          keyBtn('▲', side.up),
+          keyBtn('◀', side.leftKey || side.left),
+          keyBtn('▼', side.down),
+          keyBtn('▶', side.rightKey || side.right)
+        );
       }
+      pad.appendChild(opts.left ? keyDpad(opts.left) : document.createElement('div'));
       if (opts.action) {
-        const ab = keyBtn(opts.action.label || '●', opts.action.key, 'width:68px;height:68px;border-radius:50%;background:rgba(0,206,201,0.4);border-color:rgba(0,206,201,0.7);');
-        pad.appendChild(ab);
+        pad.appendChild(keyBtn(opts.action.label || '●', opts.action.key, ACTION_STYLE));
       }
-      if (opts.right) {
-        const dpad = document.createElement('div');
-        dpad.style.cssText = 'display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;pointer-events:auto;';
-        dpad.appendChild(document.createElement('div'));
-        dpad.appendChild(keyBtn('▲', opts.right.up));
-        dpad.appendChild(document.createElement('div'));
-        dpad.appendChild(keyBtn('◀', opts.right.leftKey || opts.right.left));
-        dpad.appendChild(keyBtn('▼', opts.right.down));
-        dpad.appendChild(keyBtn('▶', opts.right.rightKey || opts.right.right));
-        pad.appendChild(dpad);
-      }
+      if (opts.right) pad.appendChild(keyDpad(opts.right));
       wrap.appendChild(pad);
       return pad;
     }
@@ -748,37 +935,26 @@
     function addMobileDpad(wrap, dirs, opts) {
       opts = opts || {};
       if (!isTouchDevice && !opts.forceShow) return null;
-      ensureGameWrap(wrap);
-      const pad = document.createElement('div');
-      pad.className = 'touch-pad';
-      pad.style.cssText = 'position:absolute;left:0;right:0;bottom:20px;z-index:20;display:flex;justify-content:space-between;align-items:flex-end;padding:8px 14px;padding-bottom:max(8px,env(safe-area-inset-bottom));pointer-events:none;gap:8px;';
+      const pad = makePadContainer(wrap);
       function cb(fn) {
         if (!fn) return { down: () => {}, up: () => {} };
         if (typeof fn === 'function') return { down: fn, up: () => {} };
         return { down: fn.down || (() => {}), up: fn.up || (() => {}) };
       }
+      function cbBtn(label, fn, extraStyle) {
+        const h = cb(fn);
+        return makeTouchBtn(label, h.down, h.up, extraStyle);
+      }
       if (dirs.left || dirs.right || dirs.up || dirs.down) {
-        const dpad = document.createElement('div');
-        dpad.style.cssText = 'display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;pointer-events:auto;';
-        const L = cb(dirs.left), R = cb(dirs.right), U = cb(dirs.up), D = cb(dirs.down);
-        dpad.appendChild(document.createElement('div'));
-        dpad.appendChild(makeTouchBtn('▲', U.down, U.up));
-        dpad.appendChild(document.createElement('div'));
-        dpad.appendChild(makeTouchBtn('◀', L.down, L.up));
-        dpad.appendChild(makeTouchBtn('▼', D.down, D.up));
-        dpad.appendChild(makeTouchBtn('▶', R.down, R.up));
-        pad.appendChild(dpad);
+        pad.appendChild(makeDpadGrid(
+          cbBtn('▲', dirs.up), cbBtn('◀', dirs.left),
+          cbBtn('▼', dirs.down), cbBtn('▶', dirs.right)
+        ));
       } else {
         pad.appendChild(document.createElement('div'));
       }
-      if (dirs.action) {
-        const A = cb(dirs.action);
-        pad.appendChild(makeTouchBtn(opts.actionLabel || '●', A.down, A.up, 'width:68px;height:68px;border-radius:50%;background:rgba(0,206,201,0.4);border-color:rgba(0,206,201,0.7);'));
-      }
-      if (dirs.action2) {
-        const A2 = cb(dirs.action2);
-        pad.appendChild(makeTouchBtn(opts.action2Label || '↻', A2.down, A2.up, 'width:56px;height:56px;border-radius:50%;background:rgba(108,92,231,0.45);'));
-      }
+      if (dirs.action) pad.appendChild(cbBtn(opts.actionLabel || '●', dirs.action, ACTION_STYLE));
+      if (dirs.action2) pad.appendChild(cbBtn(opts.action2Label || '↻', dirs.action2, ACTION2_STYLE));
       wrap.appendChild(pad);
       return pad;
     }
@@ -800,8 +976,7 @@
     // ========== 1. SNAKE (texturas + más lento + récord) ==========
     function startSnake(body) {
       ensureGameWrap(body);
-      const canvas = makeCanvas(body, 400, 400);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 400, 400);
       const COLS = 20, ROWS = 20, SIZE = 20;
       let snake = [{x:10,y:10}], dir = {x:1,y:0}, nextDir = {x:1,y:0};
       let food = {x:15,y:15}, score = 0, combo = 0, dead = false, loop = null;
@@ -919,25 +1094,18 @@
         }
 
         if (dead) {
-          ctx.fillStyle = 'rgba(0,0,0,0.72)';
-          ctx.fillRect(0, 0, 400, 400);
-          ctx.fillStyle = '#fff';
-          ctx.font = 'bold 28px Nunito';
-          ctx.textAlign = 'center';
-          ctx.fillText('¡Perdiste!', 200, 160);
-          ctx.font = '16px Nunito';
-          ctx.fillText('Puntos: ' + score, 200, 195);
-          ctx.fillStyle = '#fdcb6e';
-          ctx.fillText('Récord: ' + best, 200, 220);
+          const lines = [
+            'Puntos: ' + score,
+            { text: 'Récord: ' + best, color: '#fdcb6e' }
+          ];
           if (score >= best && score > 0) {
-            ctx.fillStyle = '#00cec9';
-            ctx.font = 'bold 15px Nunito';
-            ctx.fillText('¡Nuevo récord!', 200, 248);
+            lines.push({ text: '¡Nuevo récord!', color: '#00cec9', font: 'bold 15px Nunito' });
           }
-          ctx.fillStyle = '#a0a0c0';
-          ctx.font = '14px Nunito';
-          ctx.fillText('R o botón para reiniciar', 200, 280);
-          ctx.textAlign = 'left';
+          lines.push({ text: 'R o botón para reiniciar', color: '#a0a0c0', font: '14px Nunito' });
+          drawCanvasPanel(ctx, 400, 400, {
+            bg: 'rgba(0,0,0,0.72)', y: 160, lineGap: 26,
+            title: '¡Perdiste!', titleFont: 'bold 28px Nunito', lines
+          });
         }
       }
 
@@ -994,13 +1162,13 @@
         };
       }
 
-      window.onkeydown = e => {
-        if (e.key === 'ArrowUp') { e.preventDefault(); setDir(0, -1); }
-        if (e.key === 'ArrowDown') { e.preventDefault(); setDir(0, 1); }
-        if (e.key === 'ArrowLeft') { e.preventDefault(); setDir(-1, 0); }
-        if (e.key === 'ArrowRight') { e.preventDefault(); setDir(1, 0); }
-        if (e.key === 'r' || e.key === 'R') reset();
-      };
+      bindKeyActions({
+        ArrowUp: () => setDir(0, -1),
+        ArrowDown: () => setDir(0, 1),
+        ArrowLeft: () => setDir(-1, 0),
+        ArrowRight: () => setDir(1, 0),
+        'r,R': reset
+      });
       addMobileDpad(body, {
         up: () => setDir(0, -1),
         down: () => setDir(0, 1),
@@ -1060,15 +1228,9 @@
       }
       const colors = {0:'#2d3436',2:'#eee4da',4:'#ede0c8',8:'#f2b179',16:'#f59563',32:'#f67c5f',64:'#f65e3b',128:'#edcf72',256:'#edcc61',512:'#edc850',1024:'#edc53f',2048:'#edc22e'};
       function draw() {
-        body.innerHTML = '';
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;width:100%;height:100%;justify-content:center;';
-        const sc = document.createElement('div');
-        sc.style.cssText = 'font-weight:900;font-size:1.3rem;';
-        sc.textContent = 'Puntos: ' + score;
-        wrap.appendChild(sc);
-        const gridEl = document.createElement('div');
-        gridEl.style.cssText = 'display:grid;grid-template-columns:repeat(4,70px);gap:8px;background:#1a1a2e;padding:10px;border-radius:12px;';
+        const wrap = makeCenteredWrap(body);
+        wrap.appendChild(makeLabel('Puntos: ' + score, 'font-weight:900;font-size:1.3rem;'));
+        const gridEl = makeGrid(4, '70px', '8px', 'background:#1a1a2e;padding:10px;border-radius:12px;');
         for (let r=0;r<size;r++) for (let c=0;c<size;c++) {
           const cell = document.createElement('div');
           const v = board[r][c];
@@ -1077,34 +1239,21 @@
           gridEl.appendChild(cell);
         }
         wrap.appendChild(gridEl);
-        const help = document.createElement('div');
-        help.style.cssText = 'color:#a0a0c0;font-size:0.85rem;';
-        help.textContent = 'Flechas o WASD para mover';
-        wrap.appendChild(help);
-        body.appendChild(wrap);
+        wrap.appendChild(makeLabel('Flechas o WASD para mover', 'color:#a0a0c0;font-size:0.85rem;'));
       }
       addTile(); addTile(); draw();
-      window.onkeydown = e => {
-        if (['ArrowLeft','a','A'].includes(e.key)) { e.preventDefault(); move('left'); }
-        if (['ArrowRight','d','D'].includes(e.key)) { e.preventDefault(); move('right'); }
-        if (['ArrowUp','w','W'].includes(e.key)) { e.preventDefault(); move('up'); }
-        if (['ArrowDown','s','S'].includes(e.key)) { e.preventDefault(); move('down'); }
-      };
+      bindKeyActions({
+        'ArrowLeft,a,A': () => move('left'),
+        'ArrowRight,d,D': () => move('right'),
+        'ArrowUp,w,W': () => move('up'),
+        'ArrowDown,s,S': () => move('down')
+      });
       // Swipe en el tablero + dpad móvil
       ensureGameWrap(body);
-      let touchStart = null;
-      body.addEventListener('touchstart', e => {
-        if (e.touches[0]) touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      }, { passive: true });
-      body.addEventListener('touchend', e => {
-        if (!touchStart || !e.changedTouches[0]) return;
-        const dx = e.changedTouches[0].clientX - touchStart.x;
-        const dy = e.changedTouches[0].clientY - touchStart.y;
-        touchStart = null;
-        if (Math.abs(dx) < 24 && Math.abs(dy) < 24) return;
-        if (Math.abs(dx) > Math.abs(dy)) move(dx > 0 ? 'right' : 'left');
-        else move(dy > 0 ? 'down' : 'up');
-      }, { passive: true });
+      addSwipe(body, {
+        up: () => move('up'), down: () => move('down'),
+        left: () => move('left'), right: () => move('right')
+      });
       addMobileDpad(body, {
         up: () => move('up'),
         down: () => move('down'),
@@ -1115,8 +1264,7 @@
 
     // ========== 3. FLAPPY ==========
     function startFlappy(body) {
-      const canvas = makeCanvas(body, 360, 520);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 360, 520);
       let bird = {y:260, vy:0}, pipes = [], score = 0, dead = false, frame = 0;
       function reset() {
         bird = {y:260, vy:0}; pipes = []; score = 0; dead = false; frame = 0;
@@ -1138,13 +1286,10 @@
         ctx.fillStyle = '#fff'; ctx.font = 'bold 28px Nunito';
         ctx.fillText(score, 170, 50);
         if (dead) {
-          ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0,0,360,520);
-          ctx.fillStyle = '#fff'; ctx.font = 'bold 26px Nunito';
-          ctx.textAlign = 'center';
-          ctx.fillText('Game Over', 180, 230);
-          ctx.font = '16px Nunito'; ctx.fillText('Puntos: '+score, 180, 260);
-          ctx.fillText('Espacio / clic para reiniciar', 180, 290);
-          ctx.textAlign = 'left';
+          drawCanvasPanel(ctx, 360, 520, {
+            bg: 'rgba(0,0,0,0.6)', y: 230, lineGap: 30, title: 'Game Over',
+            lines: ['Puntos: '+score, 'Espacio / clic para reiniciar']
+          });
         }
       }
       function update() {
@@ -1173,9 +1318,8 @@
         if (dead) { reset(); }
         else bird.vy = -7.5;
       }
-      canvas.onclick = flap;
-      canvas.addEventListener('touchstart', e => { e.preventDefault(); flap(); }, { passive: false });
-      window.onkeydown = e => { if (e.code==='Space') { e.preventDefault(); flap(); } };
+      addCanvasTap(canvas, flap);
+      bindKeyActions({ Space: flap });
       addMobileDpad(body, {
         action: () => flap()
       }, { actionLabel: '🐦' });
@@ -1186,8 +1330,7 @@
 
     // ========== 4. BREAKOUT ==========
     function startBreakout(body) {
-      const canvas = makeCanvas(body, 400, 500);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 400, 500);
       let paddle = {x:160, w:80}, ball = {x:200, y:400, vx:3, vy:-3}, bricks = [], score = 0, lives = 3, dead = false;
       for (let r=0;r<5;r++) for (let c=0;c<8;c++) bricks.push({x:c*48+8, y:r*24+40, alive:true, color:['#e17055','#fd79a8','#fdcb6e','#00cec9','#6c5ce7'][r]});
       function draw() {
@@ -1198,11 +1341,10 @@
         ctx.fillStyle='#fff'; ctx.font='bold 14px Nunito';
         ctx.fillText('Puntos: '+score+'  Vidas: '+lives, 10, 24);
         if (dead) {
-          ctx.fillStyle='rgba(0,0,0,0.7)'; ctx.fillRect(0,0,400,500);
-          ctx.fillStyle='#fff'; ctx.font='bold 26px Nunito'; ctx.textAlign='center';
-          ctx.fillText(lives<=0?'Game Over':'¡Nivel completo!', 200, 230);
-          ctx.font='16px Nunito'; ctx.fillText('Pulsa R para reiniciar', 200, 260);
-          ctx.textAlign='left';
+          drawCanvasPanel(ctx, 400, 500, {
+            y: 230, lineGap: 30, title: lives<=0?'Game Over':'¡Nivel completo!',
+            lines: ['Pulsa R para reiniciar']
+          });
         }
       }
       function update() {
@@ -1224,50 +1366,35 @@
         draw();
         animId = requestAnimationFrame(update);
       }
-      function setPaddleX(clientX) {
-        const rect = canvas.getBoundingClientRect();
-        paddle.x = Math.max(0, Math.min(320, (clientX - rect.left) * (400 / rect.width) - 40));
+      function restart() {
+        if (!dead) return;
+        bricks.forEach(b => b.alive = true); score = 0; lives = 3; dead = false;
+        ball = { x: 200, y: 400, vx: 3, vy: -3 };
       }
-      canvas.onmousemove = e => setPaddleX(e.clientX);
-      canvas.addEventListener('touchmove', e => {
-        e.preventDefault();
-        if (e.touches[0]) setPaddleX(e.touches[0].clientX);
-      }, { passive: false });
-      canvas.addEventListener('touchstart', e => {
-        e.preventDefault();
-        if (e.touches[0]) setPaddleX(e.touches[0].clientX);
-      }, { passive: false });
+      addPointerDrag(canvas, 400, 500, p => {
+        paddle.x = Math.max(0, Math.min(320, p.x - 40));
+      });
       const brKeys = { left: false, right: false };
-      const brPadInterval = setInterval(() => {
-        if (currentGame !== 'breakout') { clearInterval(brPadInterval); return; }
+      startHoldLoop('breakout', () => {
         if (brKeys.left) paddle.x = Math.max(0, paddle.x - 6);
         if (brKeys.right) paddle.x = Math.min(320, paddle.x + 6);
-      }, 16);
-      window.onkeydown = e => {
-        if (e.key==='ArrowLeft') { e.preventDefault(); paddle.x = Math.max(0, paddle.x-20); }
-        if (e.key==='ArrowRight') { e.preventDefault(); paddle.x = Math.min(320, paddle.x+20); }
-        if ((e.key==='r'||e.key==='R') && dead) {
-          bricks.forEach(b=>b.alive=true); score=0; lives=3; dead=false;
-          ball={x:200,y:400,vx:3,vy:-3};
-        }
-      };
+      });
+      bindKeyActions({
+        ArrowLeft: () => { paddle.x = Math.max(0, paddle.x-20); },
+        ArrowRight: () => { paddle.x = Math.min(320, paddle.x+20); },
+        'r,R': restart
+      });
       addMobileDpad(body, {
         left: { down: () => { brKeys.left = true; }, up: () => { brKeys.left = false; } },
         right: { down: () => { brKeys.right = true; }, up: () => { brKeys.right = false; } },
-        action: () => {
-          if (dead) {
-            bricks.forEach(b => b.alive = true); score = 0; lives = 3; dead = false;
-            ball = { x: 200, y: 400, vx: 3, vy: -3 };
-          }
-        }
+        action: restart
       }, { actionLabel: 'R' });
       makeOverlay(body, 'Breakout 🧱', 'Arrastra / botones · Rompe los bloques', 'Jugar', () => update());
     }
 
     // ========== 5. PONG ==========
     function startPong(body) {
-      const canvas = makeCanvas(body, 400, 500);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 400, 500);
       let p1 = 200, p2 = 200, ball = {x:200,y:250,vx:3,vy:2}, s1=0, s2=0;
       function draw() {
         ctx.fillStyle='#111'; ctx.fillRect(0,0,400,500);
@@ -1291,26 +1418,18 @@
         draw();
         animId = requestAnimationFrame(update);
       }
-      window.onkeydown = e => {
-        if (e.key==='ArrowUp' || e.key==='w') { e.preventDefault(); p1 = Math.max(40, p1-18); }
-        if (e.key==='ArrowDown' || e.key==='s') { e.preventDefault(); p1 = Math.min(460, p1+18); }
-      };
-      canvas.onmousemove = e => {
-        const rect = canvas.getBoundingClientRect();
-        p1 = Math.max(40, Math.min(460, (e.clientY-rect.top)*(500/rect.height)));
-      };
-      canvas.addEventListener('touchmove', e => {
-        e.preventDefault();
-        if (!e.touches[0]) return;
-        const rect = canvas.getBoundingClientRect();
-        p1 = Math.max(40, Math.min(460, (e.touches[0].clientY - rect.top) * (500 / rect.height)));
-      }, { passive: false });
+      bindKeyActions({
+        'ArrowUp,w': () => { p1 = Math.max(40, p1-18); },
+        'ArrowDown,s': () => { p1 = Math.min(460, p1+18); }
+      });
+      addPointerDrag(canvas, 400, 500, p => {
+        p1 = Math.max(40, Math.min(460, p.y));
+      });
       const pongKeys = { up: false, down: false };
-      const pongPadInterval = setInterval(() => {
-        if (currentGame !== 'pong') { clearInterval(pongPadInterval); return; }
+      startHoldLoop('pong', () => {
         if (pongKeys.up) p1 = Math.max(40, p1 - 5);
         if (pongKeys.down) p1 = Math.min(460, p1 + 5);
-      }, 16);
+      });
       addMobileDpad(body, {
         up: { down: () => { pongKeys.up = true; }, up: () => { pongKeys.up = false; } },
         down: { down: () => { pongKeys.down = true; }, up: () => { pongKeys.down = false; } }
@@ -1324,15 +1443,9 @@
       let cards = [...emojis, ...emojis].sort(()=>Math.random()-0.5);
       let flipped = [], locked = false, matched = 0, moves = 0;
       function render() {
-        body.innerHTML = '';
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;width:100%;height:100%;justify-content:center;';
-        const info = document.createElement('div');
-        info.style.cssText = 'font-weight:800;';
-        info.textContent = `Movimientos: ${moves} · Parejas: ${matched}/8`;
-        wrap.appendChild(info);
-        const grid = document.createElement('div');
-        grid.style.cssText = 'display:grid;grid-template-columns:repeat(4,70px);gap:8px;';
+        const wrap = makeCenteredWrap(body);
+        wrap.appendChild(makeLabel(`Movimientos: ${moves} · Parejas: ${matched}/8`));
+        const grid = makeGrid(4, '70px', '8px');
         cards.forEach((em, i) => {
           const card = document.createElement('div');
           const isFlipped = flipped.includes(i) || card.dataset.matched === '1';
@@ -1362,7 +1475,6 @@
           grid.appendChild(card);
         });
         wrap.appendChild(grid);
-        body.appendChild(wrap);
       }
       render();
     }
@@ -1377,15 +1489,12 @@
         return null;
       }
       function render() {
-        body.innerHTML = '';
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px;width:100%;height:100%;justify-content:center;';
-        const status = document.createElement('div');
-        status.style.cssText = 'font-weight:900;font-size:1.2rem;';
-        status.textContent = winner ? (winner==='Empate'?'Empate':`¡Gana ${winner}!`) : `Turno: ${turn}`;
-        wrap.appendChild(status);
-        const grid = document.createElement('div');
-        grid.style.cssText = 'display:grid;grid-template-columns:repeat(3,90px);gap:8px;';
+        const wrap = makeCenteredWrap(body, { gap: '14px', padding: '20px' });
+        wrap.appendChild(makeLabel(
+          winner ? (winner==='Empate'?'Empate':`¡Gana ${winner}!`) : `Turno: ${turn}`,
+          'font-weight:900;font-size:1.2rem;'
+        ));
+        const grid = makeGrid(3, '90px', '8px');
         board.forEach((v,i) => {
           const cell = document.createElement('div');
           cell.style.cssText = `width:90px;height:90px;border-radius:12px;background:#2d3436;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:900;cursor:pointer;color:${v==='X'?'#00cec9':'#fd79a8'};`;
@@ -1401,21 +1510,17 @@
         });
         wrap.appendChild(grid);
         if (winner) {
-          const btn = document.createElement('button');
-          btn.textContent = 'Jugar de nuevo';
-          btn.style.cssText = 'background:linear-gradient(135deg,#6c5ce7,#00cec9);color:#fff;border:none;padding:0.7rem 1.5rem;border-radius:50px;font-weight:800;cursor:pointer;font-family:inherit;';
-          btn.onclick = () => { board=Array(9).fill(null); turn='X'; winner=null; render(); };
-          wrap.appendChild(btn);
+          wrap.appendChild(makeButton('Jugar de nuevo', () => {
+            board = Array(9).fill(null); turn = 'X'; winner = null; render();
+          }));
         }
-        body.appendChild(wrap);
       }
       render();
     }
 
     // ========== 8. RUNNER ==========
     function startRunner(body) {
-      const canvas = makeCanvas(body, 400, 300);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 400, 300);
       let player = {x:60, y:220, vy:0, onGround:true}, obstacles = [], score = 0, speed = 4, dead = false;
       function reset() { player={x:60,y:220,vy:0,onGround:true}; obstacles=[]; score=0; speed=4; dead=false; }
       function draw() {
@@ -1453,9 +1558,8 @@
         if (dead) { reset(); }
         else if (player.onGround) { player.vy = -12; player.onGround = false; }
       }
-      canvas.onclick = jump;
-      canvas.addEventListener('touchstart', e => { e.preventDefault(); jump(); }, { passive: false });
-      window.onkeydown = e => { if (e.code==='Space') { e.preventDefault(); jump(); } };
+      addCanvasTap(canvas, jump);
+      bindKeyActions({ Space: jump });
       addMobileDpad(body, {
         action: () => jump()
       }, { actionLabel: '⤒' });
@@ -1686,15 +1790,9 @@
         if (count === rows*cols - mines) won = true;
       }
       function render() {
-        body.innerHTML = '';
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;width:100%;height:100%;justify-content:center;';
-        const status = document.createElement('div');
-        status.style.cssText = 'font-weight:800;';
-        status.textContent = dead ? '💥 Boom!' : won ? '🎉 ¡Ganaste!' : '🚩 Buscaminas';
-        wrap.appendChild(status);
-        const g = document.createElement('div');
-        g.style.cssText = `display:grid;grid-template-columns:repeat(${cols},32px);gap:2px;`;
+        const wrap = makeCenteredWrap(body);
+        wrap.appendChild(makeLabel(dead ? '💥 Boom!' : won ? '🎉 ¡Ganaste!' : '🚩 Buscaminas'));
+        const g = makeGrid(cols, '32px', '2px');
         for (let r=0;r<rows;r++) for (let c=0;c<cols;c++) {
           const cell = document.createElement('div');
           let bg = '#2d3436', txt = '';
@@ -1713,21 +1811,15 @@
         }
         wrap.appendChild(g);
         if (dead || won) {
-          const btn = document.createElement('button');
-          btn.textContent = 'Reiniciar';
-          btn.style.cssText = 'background:#6c5ce7;color:#fff;border:none;padding:0.6rem 1.4rem;border-radius:50px;font-weight:800;cursor:pointer;font-family:inherit;';
-          btn.onclick = () => { init(); render(); };
-          wrap.appendChild(btn);
+          wrap.appendChild(makeButton('Reiniciar', () => { init(); render(); }, '#6c5ce7'));
         }
-        body.appendChild(wrap);
       }
       init(); render();
     }
 
     // ========== 11. TETRIS MINI ==========
     function startTetris(body) {
-      const canvas = makeCanvas(body, 200, 400);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 200, 400);
       const COLS = 10, ROWS = 20, SIZE = 20;
       const SHAPES = [
         [[1,1,1,1]], [[1,1],[1,1]], [[0,1,0],[1,1,1]],
@@ -1779,10 +1871,11 @@
         }
         ctx.fillStyle='#fff'; ctx.font='bold 14px Nunito'; ctx.fillText('Puntos: '+score, 8, 18);
         if (dead) {
-          ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillRect(0,0,200,400);
-          ctx.fillStyle='#fff'; ctx.font='bold 20px Nunito'; ctx.textAlign='center';
-          ctx.fillText('Game Over', 100, 180); ctx.font='14px Nunito';
-          ctx.fillText('R para reiniciar', 100, 210); ctx.textAlign='left';
+          drawCanvasPanel(ctx, 200, 400, {
+            bg: 'rgba(0,0,0,0.75)', y: 180, lineGap: 30,
+            title: 'Game Over', titleFont: 'bold 20px Nunito',
+            lines: [{ text: 'R para reiniciar', font: '14px Nunito' }]
+          });
         }
       }
       function drop() {
@@ -1800,14 +1893,13 @@
         board = Array(ROWS).fill().map(() => Array(COLS).fill(0));
         score = 0; dead = false; newPiece(); draw();
       }
-      window.onkeydown = e => {
-        if (dead && (e.key==='r'||e.key==='R')) { doReset(); return; }
-        if (dead) return;
-        if (e.key==='ArrowLeft') { e.preventDefault(); doLeft(); }
-        if (e.key==='ArrowRight') { e.preventDefault(); doRight(); }
-        if (e.key==='ArrowDown') { e.preventDefault(); doDrop(); }
-        if (e.key==='ArrowUp') { e.preventDefault(); doRotate(); }
-      };
+      bindKeyActions({
+        'r,R': doReset,
+        ArrowLeft: doLeft,
+        ArrowRight: doRight,
+        ArrowDown: doDrop,
+        ArrowUp: doRotate
+      });
       addMobileDpad(body, {
         left: () => doLeft(),
         right: () => doRight(),
@@ -1818,13 +1910,13 @@
       makeOverlay(body, 'Tetris Mini 🟦', 'Flechas/botones · ↑ rotar · ↓ bajar', 'Jugar', () => {
         newPiece(); draw();
         const loop = setInterval(() => { if (currentGame!=='tetris') { clearInterval(loop); return; } drop(); }, 500);
+        gameIntervals.push(loop);
       });
     }
 
     // ========== 12. DODGE ==========
     function startDodge(body) {
-      const canvas = makeCanvas(body, 360, 500);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, 360, 500);
       let player = {x:165, y:440}, blocks = [], score = 0, dead = false;
       function reset() { player={x:165,y:440}; blocks=[]; score=0; dead=false; }
       function draw() {
@@ -1834,11 +1926,10 @@
         blocks.forEach(b => ctx.fillRect(b.x, b.y, 28, 28));
         ctx.fillStyle='#fff'; ctx.font='bold 18px Nunito'; ctx.fillText('Puntos: '+Math.floor(score), 10, 28);
         if (dead) {
-          ctx.fillStyle='rgba(0,0,0,0.7)'; ctx.fillRect(0,0,360,500);
-          ctx.fillStyle='#fff'; ctx.font='bold 24px Nunito'; ctx.textAlign='center';
-          ctx.fillText('¡Te pillaron!', 180, 220);
-          ctx.font='16px Nunito'; ctx.fillText('Espacio para reiniciar', 180, 250);
-          ctx.textAlign='left';
+          drawCanvasPanel(ctx, 360, 500, {
+            y: 220, lineGap: 30, title: '¡Te pillaron!', titleFont: 'bold 24px Nunito',
+            lines: ['Espacio para reiniciar']
+          });
         }
       }
       function update() {
@@ -1855,28 +1946,20 @@
         draw();
         animId = requestAnimationFrame(update);
       }
-      canvas.onmousemove = e => {
-        const rect = canvas.getBoundingClientRect();
-        player.x = Math.max(0, Math.min(330, (e.clientX-rect.left)*(360/rect.width)-15));
-      };
+      // Arrastrar ratón / dedo sobre el canvas
+      addPointerDrag(canvas, 360, 500, p => {
+        player.x = Math.max(0, Math.min(330, p.x - 15));
+      });
       const dodgeKeys = { left: false, right: false };
-      const dodgePadInterval = setInterval(() => {
-        if (currentGame !== 'dodge') { clearInterval(dodgePadInterval); return; }
+      startHoldLoop('dodge', () => {
         if (dodgeKeys.left) player.x = Math.max(0, player.x - 5);
         if (dodgeKeys.right) player.x = Math.min(330, player.x + 5);
-      }, 16);
-      window.onkeydown = e => {
-        if (e.key==='ArrowLeft') { e.preventDefault(); player.x = Math.max(0, player.x-15); }
-        if (e.key==='ArrowRight') { e.preventDefault(); player.x = Math.min(330, player.x+15); }
-        if (e.code==='Space' && dead) { reset(); }
-      };
-      // Touch drag on canvas
-      canvas.addEventListener('touchmove', e => {
-        e.preventDefault();
-        const t = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        player.x = Math.max(0, Math.min(330, (t.clientX - rect.left) * (360 / rect.width) - 15));
-      }, { passive: false });
+      });
+      bindKeyActions({
+        ArrowLeft: () => { player.x = Math.max(0, player.x-15); },
+        ArrowRight: () => { player.x = Math.min(330, player.x+15); },
+        Space: () => { if (dead) reset(); }
+      });
       addMobileDpad(body, {
         left: { down: () => { dodgeKeys.left = true; }, up: () => { dodgeKeys.left = false; } },
         right: { down: () => { dodgeKeys.right = true; }, up: () => { dodgeKeys.right = false; } },
@@ -1892,8 +1975,7 @@
     // ========== 13. GEOMETRY DASH (100% local, sin iframes ni dominios externos) ==========
     function startGeoDash(body) {
       const W = 480, H = 320, GROUND = H - 60;
-      const canvas = makeCanvas(body, W, H);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, W, H);
       let player, obstacles, particles, speed, score, best, dead, started, t;
       function reset() {
         player = { x: 70, y: GROUND - 30, size: 30, vy: 0, rot: 0, jumps: 0 };
@@ -1955,22 +2037,20 @@
         ctx.font = 'bold 13px Nunito'; ctx.fillStyle = '#a0a0c0';
         ctx.fillText('Mejor: ' + Math.floor(best), 12, 44);
         if (!started) {
-          ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = 'bold 26px Nunito';
-          ctx.fillText('◆ Geometry Dash', W/2, H/2 - 30);
-          ctx.font = '15px Nunito';
-          ctx.fillText('Espacio / clic / ↑ para saltar', W/2, H/2);
-          ctx.fillText('Pulsa para empezar', W/2, H/2 + 26);
-          ctx.textAlign = 'left';
+          drawCanvasPanel(ctx, W, H, {
+            bg: 'rgba(0,0,0,0.55)', y: H/2 - 30, lineGap: 30, lineFont: '15px Nunito',
+            title: '◆ Geometry Dash',
+            lines: ['Espacio / clic / ↑ para saltar', 'Pulsa para empezar']
+          });
         }
         if (dead) {
-          ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = 'bold 26px Nunito';
-          ctx.fillText('¡Chocaste!', W/2, H/2 - 20);
-          ctx.font = '16px Nunito';
-          ctx.fillText('Puntos: ' + Math.floor(score) + '  ·  Mejor: ' + Math.floor(best), W/2, H/2 + 10);
-          ctx.fillText('Espacio / clic para reintentar', W/2, H/2 + 36);
-          ctx.textAlign = 'left';
+          drawCanvasPanel(ctx, W, H, {
+            bg: 'rgba(0,0,0,0.65)', y: H/2 - 20, lineGap: 30, title: '¡Chocaste!',
+            lines: [
+              'Puntos: ' + Math.floor(score) + '  ·  Mejor: ' + Math.floor(best),
+              'Espacio / clic para reintentar'
+            ]
+          });
         }
       }
       function update() {
@@ -1999,11 +2079,8 @@
         draw();
         animId = requestAnimationFrame(update);
       }
-      canvas.onclick = jump;
-      canvas.addEventListener('touchstart', e => { e.preventDefault(); jump(); }, { passive: false });
-      window.onkeydown = e => {
-        if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); jump(); }
-      };
+      addCanvasTap(canvas, jump);
+      bindKeyActions({ ' ,ArrowUp': jump });
       addMobileDpad(body, {
         action: () => jump()
       }, { actionLabel: '⤒' });
@@ -2013,26 +2090,20 @@
 
     // ========== 14. ROCKET LEAGUE .IO (local por defecto, 3D opcional) ==========
     function startRocket(body) {
-      body.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'width:100%;height:100%;position:relative;background:#0a1628;';
-      body.appendChild(wrap);
-      const overlay = document.createElement('div');
-      overlay.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;background:linear-gradient(160deg,#0a1628,#1a3a5c);color:#fff;text-align:center;padding:20px;';
-      overlay.innerHTML = '<div style="font-size:3rem;margin-bottom:8px">🚗</div><div style="font-weight:900;font-size:1.5rem;margin-bottom:6px">Rocket League .io</div><div style="color:#a0a0c0;font-size:0.9rem;max-width:320px;margin-bottom:18px;line-height:1.4">100% local · 1 vs CPU · WASD mover · Espacio salto · Shift boost</div><button id="rlStart" style="background:linear-gradient(135deg,#0984e3,#e17055);color:#fff;border:none;padding:12px 28px;border-radius:50px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit">¡Jugar!</button><button id="rl3d" style="margin-top:10px;background:transparent;color:#a0a0c0;border:1px solid rgba(255,255,255,0.25);padding:6px 14px;border-radius:50px;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:inherit">Probar modo 3D (necesita internet)</button><div id="rlStatus" style="margin-top:12px;color:#a0a0c0;font-size:0.8rem"></div>';
-      wrap.appendChild(overlay);
-      const scoreEl = document.createElement('div');
-      scoreEl.style.cssText = 'position:absolute;top:10px;left:0;right:0;text-align:center;z-index:4;font-weight:900;font-size:1.6rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);pointer-events:none;display:none';
-      scoreEl.textContent = '0 - 0'; wrap.appendChild(scoreEl);
-      const hintEl = document.createElement('div');
-      hintEl.style.cssText = 'position:absolute;bottom:8px;left:0;right:0;text-align:center;z-index:4;font-size:0.75rem;color:rgba(255,255,255,0.55);pointer-events:none;display:none';
-      hintEl.textContent = 'WASD · Espacio salto · Shift boost'; wrap.appendChild(hintEl);
+      const shell = makeArenaShell(body, {
+        bg: '#0a1628', bg2: '#1a3a5c', icon: '🚗', title: 'Rocket League .io',
+        desc: '100% local · 1 vs CPU · WASD mover · Espacio salto · Shift boost',
+        btnBg: 'linear-gradient(135deg,#0984e3,#e17055)',
+        hint: 'WASD · Espacio salto · Shift boost',
+        extraHtml: '<button id="rl3d" style="margin-top:10px;background:transparent;color:#a0a0c0;border:1px solid rgba(255,255,255,0.25);padding:6px 14px;border-radius:50px;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:inherit">Probar modo 3D (necesita internet)</button>'
+      });
+      const { wrap, overlay, startBtn, statusEl } = shell;
 
       // Modo local por defecto: no depende de ningún CDN ni dominio externo,
       // así que nunca lo bloquea la proxy del colegio.
-      overlay.querySelector('#rlStart').onclick = () => {
-        overlay.querySelector('#rlStart').disabled = true;
-        startRocket25D(wrap, overlay, scoreEl, hintEl);
+      startBtn.onclick = () => {
+        startBtn.disabled = true;
+        startRocket25D(shell);
       };
 
       function loadScript(src, ms) {
@@ -2046,20 +2117,20 @@
       }
       overlay.querySelector('#rl3d').onclick = async (e) => {
         e.stopPropagation();
-        const status = overlay.querySelector('#rlStatus');
-        overlay.querySelector('#rlStart').disabled = true;
-        status.textContent = 'Cargando motor 3D...';
+        startBtn.disabled = true;
+        statusEl.textContent = 'Cargando motor 3D...';
         try {
           await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 4000);
-          startRocket3D(wrap, overlay, scoreEl, hintEl);
+          startRocket3D(shell);
         } catch (err) {
-          status.textContent = '3D bloqueado por la proxy del cole · usando modo local...';
-          setTimeout(() => startRocket25D(wrap, overlay, scoreEl, hintEl), 500);
+          statusEl.textContent = '3D bloqueado por la proxy del cole · usando modo local...';
+          setTimeout(() => startRocket25D(shell), 500);
         }
       };
     }
 
-    function startRocket3D(wrap, overlay, scoreEl, hintEl) {
+    function startRocket3D(shell) {
+      const { wrap, scoreEl } = shell;
       const THREE = window.THREE;
       const W = wrap.clientWidth || 640, H = wrap.clientHeight || 400;
       const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -2175,25 +2246,20 @@
         renderer.render(scene, camera);
         animId = requestAnimationFrame(tick);
       }
-      window.onkeydown = e => { keys[e.key]=true; if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Enter'].includes(e.key)) e.preventDefault(); };
-      window.onkeyup = e => { keys[e.key]=false; };
+      bindKeys(keys, { prevent: ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Enter'] });
       addTouchPad(wrap, keys, {
         left: { up:'w', down:'s', left:'a', right:'d' },
         right: { up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight' },
         action: { key:' ', label:'⤒' }
       });
-      overlay.style.display = 'none'; scoreEl.style.display = 'block'; hintEl.style.display = 'block';
-      hintEl.textContent = 'J1: WASD+Shift+Espacio · J2: Flechas+Ctrl+Enter';
+      shell.enterGame('J1: WASD+Shift+Espacio · J2: Flechas+Ctrl+Enter');
       resetPlay(0); tick();
     }
 
-    function startRocket25D(wrap, overlay, scoreEl, hintEl) {
-      overlay.style.display = 'none'; scoreEl.style.display = 'block'; hintEl.style.display = 'block';
-      const canvas = document.createElement('canvas');
-      canvas.width = 640; canvas.height = 360;
-      canvas.style.cssText = 'width:100%;height:100%;display:block;background:#1a5c3a';
-      wrap.appendChild(canvas);
-      const ctx = canvas.getContext('2d');
+    function startRocket25D(shell) {
+      const { wrap, scoreEl } = shell;
+      shell.enterGame();
+      const { ctx } = makeArenaCanvas(wrap, 640, 360, '#1a5c3a');
       let p1 = { x:120,y:180,vx:0,vy:0,angle:0,boost:100 };
       let p2 = { x:520,y:180,vx:0,vy:0,angle:Math.PI,boost:100 };
       let ball = { x:320,y:180,vx:0,vy:0 }, s1=0, s2=0, keys={}, lastGoal=0;
@@ -2239,21 +2305,19 @@
         scoreEl.textContent=s1+'  -  '+s2;
         animId=requestAnimationFrame(loop);
       }
-      window.onkeydown=e=>{ keys[e.key]=true; if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault(); };
-      window.onkeyup=e=>{ keys[e.key]=false; };
+      bindKeys(keys);
       addTouchPad(wrap, keys, {
         left: { up:'w', down:'s', left:'a', right:'d' },
         right: { up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight' }
       });
-      hintEl.textContent = 'J1: WASD+Shift · J2: Flechas+Ctrl';
+      shell.hintEl.textContent = 'J1: WASD+Shift · J2: Flechas+Ctrl';
       loop();
     }
 
     // ========== 15. SPACE INVADERS ==========
     function startInvaders(body) {
       const W = 400, H = 460;
-      const canvas = makeCanvas(body, W, H);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, W, H);
       let player, bullets, enemyBullets, enemies, score, lives, dead, dir, edgeStep;
       function reset() {
         player = { x: W/2-14, y: H-40, w: 28, h: 16 };
@@ -2280,11 +2344,10 @@
         ctx.fillStyle = '#fff'; ctx.font = 'bold 16px Nunito';
         ctx.fillText('Puntos: '+score, 10, 22); ctx.fillText('Vidas: '+lives, W-100, 22);
         if (dead) {
-          ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = 'bold 26px Nunito';
-          ctx.fillText(score > 0 && enemies.every(e=>!e.alive) ? '¡Ganaste!' : 'Game Over', W/2, H/2-10);
-          ctx.font = '15px Nunito'; ctx.fillText('Puntos: '+score+' · R para reiniciar', W/2, H/2+18);
-          ctx.textAlign = 'left';
+          drawCanvasPanel(ctx, W, H, {
+            y: H/2-10, title: score > 0 && enemies.every(e=>!e.alive) ? '¡Ganaste!' : 'Game Over',
+            lineFont: '15px Nunito', lines: ['Puntos: '+score+' · R para reiniciar']
+          });
         }
       }
       function update() {
@@ -2315,19 +2378,18 @@
         animId = requestAnimationFrame(update);
       }
       function shoot() { if (!dead) bullets.push({ x: player.x + player.w / 2, y: player.y }); }
-      window.onkeydown = e => {
-        if (dead && (e.key==='r'||e.key==='R')) { reset(); return; }
-        if (e.key==='ArrowLeft') { e.preventDefault(); player.x = Math.max(0, player.x-16); }
-        if (e.key==='ArrowRight') { e.preventDefault(); player.x = Math.min(W-player.w, player.x+16); }
-        if (e.key===' ') { e.preventDefault(); shoot(); }
-      };
+      bindKeyActions({
+        'r,R': () => { if (dead) reset(); },
+        ArrowLeft: () => { player.x = Math.max(0, player.x-16); },
+        ArrowRight: () => { player.x = Math.min(W-player.w, player.x+16); },
+        ' ': shoot
+      });
       // Movimiento táctil continuo
       const invKeys = { left: false, right: false };
-      const invPadInterval = setInterval(() => {
-        if (currentGame !== 'invaders') { clearInterval(invPadInterval); return; }
+      startHoldLoop('invaders', () => {
         if (invKeys.left) player.x = Math.max(0, player.x - 4);
         if (invKeys.right) player.x = Math.min(W - player.w, player.x + 4);
-      }, 16);
+      });
       addMobileDpad(body, {
         left: { down: () => { invKeys.left = true; }, up: () => { invKeys.left = false; } },
         right: { down: () => { invKeys.right = true; }, up: () => { invKeys.right = false; } },
@@ -2339,8 +2401,7 @@
     // ========== 16. AIR HOCKEY (2 jugadores) ==========
     function startAirHockey(body) {
       const W = 420, H = 500;
-      const canvas = makeCanvas(body, W, H);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, W, H);
       let p1 = {x:W/2,y:H-50}, p2 = {x:W/2,y:50}, puck = {x:W/2,y:H/2,vx:0,vy:0};
       let s1=0, s2=0, keys={}, R=22, PR=12;
       function draw() {
@@ -2392,8 +2453,7 @@
         draw();
         animId = requestAnimationFrame(update);
       }
-      window.onkeydown = e => { keys[e.key]=true; if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault(); };
-      window.onkeyup = e => { keys[e.key]=false; };
+      bindKeys(keys, { prevent: ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'] });
       addTouchPad(body, keys, {
         left: { up: 'w', down: 's', left: 'a', right: 'd' },
         right: { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }
@@ -2424,15 +2484,12 @@
         if (board.every(row => row.every(x=>x))) winner = -1;
       }
       function render() {
-        body.innerHTML = '';
-        const wrap = document.createElement('div');
-        wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px;width:100%;height:100%;justify-content:center;';
-        const info = document.createElement('div');
-        info.style.cssText = 'font-weight:800;color:#fff;';
-        info.textContent = winner ? (winner===-1?'¡Empate!':'¡Ganó Jugador '+winner+'!') : 'Turno: Jugador '+turn+(turn===1?' 🔴':' 🟡');
-        wrap.appendChild(info);
-        const grid = document.createElement('div');
-        grid.style.cssText = `display:grid;grid-template-columns:repeat(${COLS},38px);gap:4px;background:#0652DD;padding:8px;border-radius:10px;`;
+        const wrap = makeCenteredWrap(body, { gap: '10px', padding: '14px' });
+        wrap.appendChild(makeLabel(
+          winner ? (winner===-1?'¡Empate!':'¡Ganó Jugador '+winner+'!') : 'Turno: Jugador '+turn+(turn===1?' 🔴':' 🟡'),
+          'font-weight:800;color:#fff;'
+        ));
+        const grid = makeGrid(COLS, '38px', '4px', 'background:#0652DD;padding:8px;border-radius:10px;');
         for (let r=0;r<ROWS;r++) for (let c=0;c<COLS;c++) {
           const cell = document.createElement('div');
           const v = board[r][c];
@@ -2442,13 +2499,10 @@
         }
         wrap.appendChild(grid);
         if (winner) {
-          const btn = document.createElement('button');
-          btn.textContent = 'Jugar de nuevo';
-          btn.style.cssText = 'background:linear-gradient(135deg,#6c5ce7,#00cec9);color:#fff;border:none;padding:0.7rem 1.5rem;border-radius:50px;font-weight:800;cursor:pointer;font-family:inherit;';
-          btn.onclick = () => { board = Array(ROWS).fill().map(()=>Array(COLS).fill(0)); turn = 1; winner = 0; render(); };
-          wrap.appendChild(btn);
+          wrap.appendChild(makeButton('Jugar de nuevo', () => {
+            board = Array(ROWS).fill().map(()=>Array(COLS).fill(0)); turn = 1; winner = 0; render();
+          }));
         }
-        body.appendChild(wrap);
       }
       render();
     }
@@ -2456,8 +2510,7 @@
     // ========== 18. BASKET SHOOTOUT ==========
     function startBasketball(body) {
       const W = 380, H = 460;
-      const canvas = makeCanvas(body, W, H);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, W, H);
       const hoop = { x: W/2, y: 90, r: 34 };
       let ball, score, timeLeft, dragging, dragStart, dead;
       function reset() { ball = { x: W/2, y: H-90, vx:0, vy:0, r:16, held:true }; score = 0; timeLeft = 40; dead = false; }
@@ -2476,11 +2529,10 @@
         ctx.fillStyle = '#fff'; ctx.font = 'bold 18px Nunito';
         ctx.fillText('Puntos: '+score, 10, 26); ctx.fillText('Tiempo: '+Math.ceil(timeLeft), W-130, 26);
         if (dead) {
-          ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle = '#fff'; ctx.textAlign='center'; ctx.font='bold 26px Nunito';
-          ctx.fillText('¡Tiempo!', W/2, H/2-10);
-          ctx.font = '16px Nunito'; ctx.fillText('Puntos: '+score+' · Toca para reiniciar', W/2, H/2+18);
-          ctx.textAlign = 'left';
+          drawCanvasPanel(ctx, W, H, {
+            y: H/2-10, title: '¡Tiempo!',
+            lines: ['Puntos: '+score+' · Toca para reiniciar']
+          });
         }
       }
       function update(dt) {
@@ -2502,11 +2554,7 @@
         update((now-last)/1000); last = now;
         animId = requestAnimationFrame(loop);
       }
-      function posFromEvent(e) {
-        const t = e.touches ? e.touches[0] : e;
-        const rect = canvas.getBoundingClientRect();
-        return { x: (t.clientX - rect.left) * (W / rect.width), y: (t.clientY - rect.top) * (H / rect.height) };
-      }
+      const posFromEvent = e => canvasPoint(canvas, e, W, H);
       function onDown(e) {
         e.preventDefault();
         if (dead) { reset(); return; }
@@ -2540,8 +2588,7 @@
     // ========== 19. SUPER SALTO (plataformas) ==========
     function startPlatformer(body) {
       const W = 480, H = 320;
-      const canvas = makeCanvas(body, W, H);
-      const ctx = canvas.getContext('2d');
+      const { canvas, ctx } = makeCanvas(body, W, H);
       const platforms = [
         {x:0,y:290,w:480,h:30}, {x:60,y:230,w:80,h:14}, {x:200,y:190,w:80,h:14},
         {x:340,y:150,w:70,h:14}, {x:150,y:120,w:60,h:14}, {x:20,y:80,w:60,h:14}
@@ -2561,11 +2608,12 @@
         ctx.fillStyle = '#2d3436'; ctx.font = 'bold 16px Nunito';
         ctx.fillText('Monedas: '+score+'/'+coins.length, 10, 22);
         if (dead) {
-          ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0,0,W,H);
-          ctx.fillStyle = '#fff'; ctx.textAlign='center'; ctx.font='bold 24px Nunito';
-          ctx.fillText(score===coins.length ? '¡Las conseguiste todas!' : 'Caíste', W/2, H/2-8);
-          ctx.font = '15px Nunito'; ctx.fillText('R para reiniciar', W/2, H/2+18);
-          ctx.textAlign = 'left';
+          drawCanvasPanel(ctx, W, H, {
+            bg: 'rgba(0,0,0,0.6)', y: H/2-8, lineGap: 26,
+            title: score===coins.length ? '¡Las conseguiste todas!' : 'Caíste',
+            titleFont: 'bold 24px Nunito', lineFont: '15px Nunito',
+            lines: ['R para reiniciar']
+          });
         }
       }
       function update() {
@@ -2588,13 +2636,13 @@
         draw();
         animId = requestAnimationFrame(update);
       }
-      window.onkeydown = e => {
-        keys[e.key]=true;
-        if (dead && (e.key==='r'||e.key==='R')) { reset(); return; }
-        if ((e.key===' '||e.key==='ArrowUp'||e.key==='w') && player.onGround) { player.vy = -9.5; player.onGround=false; }
-        if ([' ','ArrowUp','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
-      };
-      window.onkeyup = e => { keys[e.key]=false; };
+      bindKeys(keys, {
+        prevent: [' ','ArrowUp','ArrowLeft','ArrowRight'],
+        onDown: e => {
+          if (dead && (e.key==='r'||e.key==='R')) { reset(); return; }
+          if ((e.key===' '||e.key==='ArrowUp'||e.key==='w') && player.onGround) { player.vy = -9.5; player.onGround=false; }
+        }
+      });
       addTouchPad(body, keys, {
         left: { up: 'ArrowUp', down: 's', left: 'ArrowLeft', right: 'ArrowRight' },
         action: { key: ' ', label: '⤒' }
@@ -2606,28 +2654,17 @@
 
     // ========== 20. SUMO ARENA 3D (2 jugadores) ==========
     function startSumo3D(body) {
-      body.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'width:100%;height:100%;position:relative;background:#1a0f2e;';
-      body.appendChild(wrap);
-      const overlay = document.createElement('div');
-      overlay.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;background:linear-gradient(160deg,#1a0f2e,#2d1b4e);color:#fff;text-align:center;padding:20px;';
-      overlay.innerHTML = '<div style="font-size:3rem;margin-bottom:8px">🥊</div><div style="font-weight:900;font-size:1.5rem;margin-bottom:6px">Sumo Arena 3D</div><div style="color:#a0a0c0;font-size:0.9rem;max-width:320px;margin-bottom:18px;line-height:1.4">2 jugadores · Empuja al rival fuera del ring<br>J1: WASD · J2: Flechas</div><button id="smStart" style="background:linear-gradient(135deg,#fd79a8,#6c5ce7);color:#fff;border:none;padding:12px 28px;border-radius:50px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit">¡Jugar!</button><div id="smStatus" style="margin-top:12px;color:#a0a0c0;font-size:0.8rem"></div>';
-      wrap.appendChild(overlay);
-      const scoreEl = document.createElement('div');
-      scoreEl.style.cssText = 'position:absolute;top:10px;left:0;right:0;text-align:center;z-index:4;font-weight:900;font-size:1.6rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.6);pointer-events:none;display:none';
-      scoreEl.textContent = '0 - 0'; wrap.appendChild(scoreEl);
-      const hintEl = document.createElement('div');
-      hintEl.style.cssText = 'position:absolute;bottom:8px;left:0;right:0;text-align:center;z-index:4;font-size:0.75rem;color:rgba(255,255,255,0.55);pointer-events:none;display:none';
-      hintEl.textContent = 'WASD vs Flechas · empuja al rival fuera del ring'; wrap.appendChild(hintEl);
+      const shell = makeArenaShell(body, {
+        bg: '#1a0f2e', bg2: '#2d1b4e', icon: '🥊', title: 'Sumo Arena 3D',
+        desc: '2 jugadores · Empuja al rival fuera del ring<br>J1: WASD · J2: Flechas',
+        btnBg: 'linear-gradient(135deg,#fd79a8,#6c5ce7)',
+        hint: 'WASD vs Flechas · empuja al rival fuera del ring'
+      });
+      const { wrap, scoreEl, startBtn } = shell;
 
       function runLocal2D() {
-        overlay.style.display = 'none'; scoreEl.style.display = 'block'; hintEl.style.display = 'block';
-        const canvas = document.createElement('canvas');
-        canvas.width = 480; canvas.height = 320;
-        canvas.style.cssText = 'width:100%;height:100%;display:block;background:#1a0f2e';
-        wrap.appendChild(canvas);
-        const ctx = canvas.getContext('2d');
+        shell.enterGame();
+        const { ctx } = makeArenaCanvas(wrap, 480, 320, '#1a0f2e');
         const cx=240, cy=160, ringR=130;
         let p1 = {x:cx-60,y:cy,vx:0,vy:0}, p2 = {x:cx+60,y:cy,vx:0,vy:0}, s1=0,s2=0, keys={};
         function respawn() { p1={x:cx-60,y:cy,vx:0,vy:0}; p2={x:cx+60,y:cy,vx:0,vy:0}; }
@@ -2650,8 +2687,7 @@
           scoreEl.textContent = s1+'  -  '+s2;
           animId = requestAnimationFrame(loop);
         }
-        window.onkeydown = e => { keys[e.key]=true; if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault(); };
-        window.onkeyup = e => { keys[e.key]=false; };
+        bindKeys(keys, { prevent: ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'] });
         addTouchPad(wrap, keys, {
           left: { up: 'w', down: 's', left: 'a', right: 'd' },
           right: { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }
@@ -2659,7 +2695,7 @@
         loop();
       }
       // Sumo es siempre local (canvas 2D), no depende de internet ni CDN.
-      overlay.querySelector('#smStart').onclick = () => { overlay.querySelector('#smStart').disabled = true; runLocal2D(); };
+      startBtn.onclick = () => { startBtn.disabled = true; runLocal2D(); };
     }
 
     // ========== PISO TRAIDOR (original troll platformer) ==========
@@ -2930,12 +2966,9 @@
 
       function resetLevel() { loadLevel(level); }
 
-      window.onkeydown = e => {
-        keys[e.key] = true;
-        if (e.key === 'r' || e.key === 'R') resetLevel();
-        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)) e.preventDefault();
-      };
-      window.onkeyup = e => { keys[e.key] = false; };
+      bindKeys(keys, {
+        onDown: e => { if (e.key === 'r' || e.key === 'R') resetLevel(); }
+      });
       addTouchPad(body, keys, {
         left: { up: 'ArrowUp', down: 's', left: 'ArrowLeft', right: 'ArrowRight' },
         action: { key: ' ', label: '⤒' }
