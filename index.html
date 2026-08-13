@@ -2801,7 +2801,9 @@
 
     function startTrollJump(body) {
       const W = 480, H = 360;
-      const { canvas, ctx } = makeCanvas(body, W, H);
+      ensureGameWrap(body);
+      const canvas = makeCanvas(body, W, H);
+      const ctx = canvas.getContext('2d');
       const hud = document.createElement('div');
       hud.style.cssText = 'text-align:center;color:#aaa;font-size:0.85rem;margin-top:6px';
       hud.innerHTML = '← → mover · Espacio/↑ saltar · R reiniciar nivel<br><span style="color:#fd79a8;font-size:0.75rem">ORIGINAL · Inspirado en platformers troll · Level Devil es de Unept → playleveldevil.com</span>';
@@ -2943,6 +2945,7 @@
 
       function loop() {
         if (currentGame !== 'trolljump') return;
+        if (dead || won) { draw(); animId = requestAnimationFrame(loop); return; }
 
         // input
         if (keys['ArrowLeft'] || keys['a'] || keys['A']) vx = -3.2;
@@ -2999,13 +3002,18 @@
           won = true;
           if (level < levels.length - 1) {
             msg = '¡Nivel ' + (level + 1) + ' OK!';
-            setTimeout(() => loadLevel(level + 1), 700);
+            setTimeout(() => { if (currentGame === 'trolljump') loadLevel(level + 1); }, 700);
           } else {
             msg = '¡TODOS LOS NIVELES! 🎉';
           }
         }
 
-        // draw
+        draw();
+        animId = requestAnimationFrame(loop);
+      }
+
+      function draw() {
+        const door = levels[level].door;
         ctx.fillStyle = '#0d0d14';
         ctx.fillRect(0, 0, W, H);
 
@@ -3067,16 +3075,16 @@
           ctx.fillText(msg, W / 2, 30);
           ctx.textAlign = 'left';
         }
-
-        animId = requestAnimationFrame(loop);
       }
       loop();
     }
 
     // INIT
     renderGames();
+
+    window.addEventListener('pagehide', () => {
+      try { localStorage.setItem('elvergalarga_last_visit', String(Date.now())); } catch (e) {}
+    });
   </script>
 </body>
 </html>
-
-<script>window.addEventListener('pagehide',()=>{try{localStorage.setItem('elvergalarga_last_visit',String(Date.now()))}catch(e){}});</script>
