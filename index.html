@@ -2950,6 +2950,7 @@
 
     function startTrollJump(body) {
       const W = 480, H = 360;
+      ensureGameWrap(body);
       const canvas = makeCanvas(body, W, H);
       const ctx = get2DContext(canvas);
       const hud = document.createElement('div');
@@ -3093,6 +3094,7 @@
 
       function loop() {
         if (currentGame !== 'trolljump') return;
+        if (dead || won) { draw(); animId = requestAnimationFrame(loop); return; }
 
         // input
         if (keys['ArrowLeft'] || keys['a'] || keys['A']) vx = -3.2;
@@ -3155,7 +3157,12 @@
           }
         }
 
-        // draw
+        draw();
+        animId = requestAnimationFrame(loop);
+      }
+
+      function draw() {
+        const door = levels[level].door;
         ctx.fillStyle = '#0d0d14';
         ctx.fillRect(0, 0, W, H);
 
@@ -3217,8 +3224,6 @@
           ctx.fillText(msg, W / 2, 30);
           ctx.textAlign = 'left';
         }
-
-        animId = requestAnimationFrame(loop);
       }
       loop();
     }
