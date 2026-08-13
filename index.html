@@ -611,6 +611,8 @@
       document.getElementById('modalTitle').textContent = game.title;
       const body = document.getElementById('modalBody');
       body.innerHTML = ''; // limpiar
+      body.style.position = '';
+      body.style.overflow = '';
       document.getElementById('playModal').classList.add('open');
       document.body.style.overflow = 'hidden';
 
@@ -875,7 +877,7 @@
     }
 
     // Estilos compartidos de los paneles táctiles
-    const PAD_STYLE = 'position:absolute;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-between;align-items:flex-end;padding:12px 14px;padding-bottom:max(12px,env(safe-area-inset-bottom));pointer-events:none;gap:8px;';
+    const PAD_STYLE = 'position:absolute;left:0;right:0;bottom:20px;z-index:20;display:flex;justify-content:space-between;align-items:flex-end;padding:8px 14px;padding-bottom:max(8px,env(safe-area-inset-bottom));pointer-events:none;gap:8px;';
     const DPAD_STYLE = 'display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,56px);gap:6px;pointer-events:auto;';
     const ACTION_STYLE = 'width:68px;height:68px;border-radius:50%;background:rgba(0,206,201,0.4);border-color:rgba(0,206,201,0.7);';
     const ACTION2_STYLE = 'width:56px;height:56px;border-radius:50%;background:rgba(108,92,231,0.45);';
@@ -1564,39 +1566,190 @@
       makeOverlay(body, 'Endless Runner 🏃', 'Toca / botón para saltar', 'Jugar', () => { reset(); update(); });
     }
 
-    // ========== 9. CLICKER ==========
-    function startClicker(body) {
-      let cookies = 0, cps = 0, last = Date.now();
-      function render() {
-        const wrap = makeCenteredWrap(body, { gap: '16px', padding: '24px' });
-        wrap.appendChild(makeLabel(Math.floor(cookies) + ' 🍪', 'font-size:2.5rem;font-weight:900;'));
-        wrap.appendChild(makeLabel(cps.toFixed(1) + ' por segundo', 'color:#a0a0c0;'));
-        const btn = document.createElement('button');
-        btn.textContent = '🍪 ¡Click!';
-        btn.style.cssText = 'font-size:2rem;padding:1.2rem 2rem;border-radius:50%;border:none;background:linear-gradient(135deg,#fdcb6e,#e17055);cursor:pointer;box-shadow:0 6px 20px rgba(225,112,85,0.4);';
-        btn.onclick = () => { cookies++; render(); };
-        wrap.appendChild(btn);
-        const shop = document.createElement('div');
-        shop.style.cssText = 'display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;';
-        [{name:'Cursor', cost:15, add:0.1},{name:'Abuela', cost:100, add:1},{name:'Fábrica', cost:500, add:8}].forEach(item => {
-          const b = document.createElement('button');
-          b.textContent = `${item.name} (${item.cost})`;
-          b.style.cssText = 'padding:0.5rem 1rem;border-radius:10px;border:none;background:#2d3436;color:#fff;font-weight:700;cursor:pointer;font-family:inherit;';
-          b.onclick = () => {
-            if (cookies >= item.cost) { cookies -= item.cost; cps += item.add; item.cost = Math.floor(item.cost*1.25); render(); }
-          };
-          shop.appendChild(b);
-        });
-        wrap.appendChild(shop);
+    // ========== 9. COOKIE CLICKER ==========
+    // CLICKER_LOGIC_START (probado en tests/clicker.test.mjs)
+    const CLICKER_SAVE_KEY = 'elvergalarga_cookie_clicker_v3';
+    // Tienda fija: compra ilimitada, el precio sube 25% por unidad.
+    const CLICKER_FIXED = [
+      {id:'cursor', name:'Cursor', icon:'🖱️', baseCost:15, add:0.1, desc:'+0.1/s'},
+      {id:'grandma', name:'Abuela', icon:'👵', baseCost:100, add:1, desc:'+1/s'},
+      {id:'factory', name:'Fábrica', icon:'🏭', baseCost:500, add:8, desc:'+8/s'}
+    ];
+    // Mejoras únicas: una sola compra cada una y aparecen de a una, en orden.
+    const CLICKER_CHAIN = [
+      {id:'hat', name:'Gorro Cookie', icon:'🎩🍪', baseCost:3000, add:200, desc:'+200/s', unique:true},
+      {id:'laserEyes', name:'Ojos láser', icon:'👀⚡', baseCost:5000, add:350, desc:'+350/s', unique:true},
+      {id:'cyborg', name:'Cookie Cyborg', icon:'🤖🍪', baseCost:25000, mult:3, desc:'Todo ×3', unique:true},
+      {id:'golden', name:'Cookie Dorada', icon:'🌟🍪', baseCost:100000, add:1000, desc:'+1.000/s', unique:true},
+      {id:'mega', name:'Cookie Mega', icon:'💎🍪', baseCost:1000000, add:5000, desc:'+5.000/s', unique:true},
+      {id:'reactor', name:'Reactor de Cookies', icon:'☢️🍪', baseCost:5000000, mult:5, desc:'Todo ×5', unique:true},
+      {id:'portal', name:'Portal de Cookies', icon:'🌀🍪', baseCost:25000000, add:50000, desc:'+50.000/s', unique:true},
+      {id:'blackhole', name:'Agujero Negro Cookie', icon:'🕳️🍪', baseCost:200000000, mult:10, desc:'Todo ×10', unique:true},
+      {id:'universe', name:'Universo Cookie', icon:'🌌🍪', baseCost:1000000000, add:1000000, desc:'+1.000.000/s', unique:true},
+      {id:'godcookie', name:'Cookie Suprema', icon:'👑🍪', baseCost:50000000000, mult:20, desc:'Todo ×20', unique:true}
+    ];
+    const CLICKER_ITEMS = CLICKER_FIXED.concat(CLICKER_CHAIN);
+
+    function clickerItem(id) {
+      for (let i = 0; i < CLICKER_ITEMS.length; i++) if (CLICKER_ITEMS[i].id === id) return CLICKER_ITEMS[i];
+      return null;
+    }
+    function clickerCount(owned, id) {
+      const n = Math.floor(Number(owned && owned[id]));
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    }
+    function clickerSanitize(raw) {
+      const src = raw && typeof raw === 'object' ? raw : {};
+      const cookies = Number(src.cookies);
+      const owned = {};
+      CLICKER_ITEMS.forEach(item => {
+        const n = clickerCount(src.owned, item.id);
+        if (n) owned[item.id] = item.unique ? 1 : n;
+      });
+      return { cookies: Number.isFinite(cookies) && cookies > 0 ? cookies : 0, owned: owned };
+    }
+    function clickerCost(item, owned) {
+      if (item.unique) return item.baseCost;
+      return Math.floor(item.baseCost * Math.pow(1.25, clickerCount(owned, item.id)));
+    }
+    function clickerMultiplier(owned) {
+      let mult = 1;
+      CLICKER_ITEMS.forEach(item => { if (item.mult && clickerCount(owned, item.id)) mult *= item.mult; });
+      return mult;
+    }
+    function clickerProduction(owned) {
+      let total = 0;
+      CLICKER_ITEMS.forEach(item => { total += clickerCount(owned, item.id) * (item.add || 0); });
+      return total * clickerMultiplier(owned);
+    }
+    function clickerClickPower(owned) { return clickerMultiplier(owned); }
+    function clickerNextUnique(owned) {
+      for (let i = 0; i < CLICKER_CHAIN.length; i++) {
+        if (!clickerCount(owned, CLICKER_CHAIN[i].id)) return CLICKER_CHAIN[i];
       }
+      return null;
+    }
+    function clickerVisibleItems(owned) {
+      const next = clickerNextUnique(owned);
+      return next ? CLICKER_FIXED.concat([next]) : CLICKER_FIXED.slice();
+    }
+    function clickerOwnedUniques(owned) {
+      return CLICKER_CHAIN.filter(item => clickerCount(owned, item.id) > 0);
+    }
+    function clickerBuy(state, id) {
+      const item = clickerItem(id);
+      if (!item) return null;
+      if (!clickerVisibleItems(state.owned).some(v => v.id === id)) return null;
+      const price = clickerCost(item, state.owned);
+      if (!(state.cookies >= price)) return null;
+      const owned = Object.assign({}, state.owned);
+      owned[id] = item.unique ? 1 : clickerCount(owned, id) + 1;
+      return { cookies: state.cookies - price, owned: owned };
+    }
+    function clickerShort(n, unit) {
+      return (n).toFixed(2).replace(/\.?0+$/,'') + unit;
+    }
+    function clickerFmt(n) {
+      if (n >= 1e12) return clickerShort(n/1e12, ' billón');
+      if (n >= 1e9) return clickerShort(n/1e9, ' B');
+      if (n >= 1e6) return clickerShort(n/1e6, ' M');
+      if (n >= 1e3) return clickerShort(n/1e3, ' K');
+      return String(Math.round(n * 10) / 10);
+    }
+    // CLICKER_LOGIC_END
+
+    function clickerLoadState() {
+      let raw = null;
+      try {
+        raw = JSON.parse(localStorage.getItem(CLICKER_SAVE_KEY) || localStorage.getItem('elvergalarga_cookie_clicker_v2') || '{}');
+      } catch (_) {}
+      return clickerSanitize(raw);
+    }
+    function clickerSaveState(state) {
+      try { localStorage.setItem(CLICKER_SAVE_KEY, JSON.stringify(state)); } catch (_) {}
+    }
+
+    function startClicker(body) {
+      body.style.position = '';
+      body.style.overflow = '';
+      const state = clickerLoadState();
+      let last = Date.now(), lastSave = Date.now();
+
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;width:100%;height:100%;justify-content:center;overflow:auto;box-sizing:border-box;';
+      const count = document.createElement('div');
+      count.style.cssText = 'font-size:2.35rem;font-weight:900;text-align:center;';
+      const cpsEl = document.createElement('div');
+      cpsEl.style.cssText = 'color:#a0a0c0;text-align:center;';
+      const btn = document.createElement('button');
+      btn.textContent = '🍪 ¡Click!';
+      btn.style.cssText = 'font-size:2rem;padding:1.1rem 1.8rem;border-radius:50%;border:none;background:linear-gradient(135deg,#fdcb6e,#e17055);cursor:pointer;box-shadow:0 6px 20px rgba(225,112,85,0.4);';
+      const shop = document.createElement('div');
+      shop.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;width:min(760px,100%);margin-top:6px;';
+      const uniquesEl = document.createElement('div');
+      uniquesEl.style.cssText = 'color:#a0a0c0;font-size:.8rem;text-align:center;';
+      const milestone = document.createElement('div');
+      milestone.style.cssText = 'margin-top:2px;color:#a0a0c0;font-size:.78rem;text-align:center;';
+      [count, cpsEl, btn, shop, uniquesEl, milestone].forEach(el => wrap.appendChild(el));
+      body.appendChild(wrap);
+
+      const buttons = new Map();
+      function makeShopButton(item) {
+        const b = document.createElement('button');
+        b.style.cssText = 'padding:.65rem .7rem;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#2d3436;color:#fff;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.25;';
+        b.onclick = () => {
+          const next = clickerBuy(state, item.id);
+          if (!next) return;
+          state.cookies = next.cookies;
+          state.owned = next.owned;
+          clickerSaveState(state);
+          syncShop();
+          update();
+        };
+        return b;
+      }
+      function syncShop() {
+        const visible = clickerVisibleItems(state.owned);
+        buttons.forEach((entry, id) => {
+          if (!visible.some(v => v.id === id)) { entry.el.remove(); buttons.delete(id); }
+        });
+        visible.forEach(item => {
+          if (buttons.has(item.id)) return;
+          const el = makeShopButton(item);
+          buttons.set(item.id, { el: el, item: item });
+          shop.appendChild(el);
+        });
+      }
+      function update() {
+        count.textContent = clickerFmt(state.cookies) + ' 🍪';
+        cpsEl.textContent = clickerFmt(clickerProduction(state.owned)) + ' por segundo · click +' + clickerFmt(clickerClickPower(state.owned));
+        buttons.forEach(entry => {
+          const item = entry.item, n = clickerCount(state.owned, item.id), price = clickerCost(item, state.owned);
+          const extra = item.unique ? ' · solo 1 vez' : (n ? ' · x' + n : '');
+          entry.el.innerHTML = `${item.icon} ${item.name}<br><small>${clickerFmt(price)} 🍪 · ${item.desc}${extra}</small>`;
+          const afford = state.cookies >= price;
+          entry.el.style.opacity = afford ? '1' : '.55';
+          entry.el.style.cursor = afford ? 'pointer' : 'not-allowed';
+        });
+        const uniques = clickerOwnedUniques(state.owned);
+        uniquesEl.textContent = uniques.length ? 'Mejoras únicas: ' + uniques.map(u => u.icon).join(' ') : 'Mejoras únicas: ninguna todavía';
+        if (state.cookies >= 1e12) milestone.innerHTML = '🏆 <strong>¡Llegaste a 1 billón de cookies!</strong><br>Creado por JB';
+        else milestone.textContent = 'Meta: 1 billón de cookies · créditos: creado por JB';
+      }
+      btn.onclick = () => {
+        state.cookies += clickerClickPower(state.owned);
+        update();
+      };
       const tick = setInterval(() => {
-        if (currentGame !== 'clicker') { clearInterval(tick); return; }
+        if (currentGame !== 'clicker') { clearInterval(tick); clickerSaveState(state); return; }
         const now = Date.now();
-        cookies += cps * ((now-last)/1000);
+        state.cookies += clickerProduction(state.owned) * Math.min((now-last)/1000, 5);
         last = now;
-        render();
+        if (now - lastSave >= 2000) { lastSave = now; clickerSaveState(state); }
+        update();
       }, 200);
-      render();
+      syncShop();
+      update();
     }
 
     // ========== 10. MINESWEEPER ==========
@@ -2601,10 +2754,38 @@
       let selectedFile = null;
       let objectUrl = null;
 
+      // Persistencia local de la ROM seleccionada. La ROM queda en el dispositivo,
+      // no se sube a GitHub ni a ningún servidor. Los saves del núcleo dependen
+      // de EmulatorJS/core y pueden usar su propio almacenamiento local.
+      const ROM_DB = 'elvergalarga_roms_v1';
+      function openRomDB() {
+        return new Promise((resolve,reject)=>{
+          if (!window.indexedDB) return reject(new Error('IndexedDB no disponible'));
+          const req=indexedDB.open(ROM_DB,1);
+          req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains('roms')) db.createObjectStore('roms'); };
+          req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error);
+        });
+      }
+      async function rememberRom(file, core) {
+        try { const db=await openRomDB(); const tx=db.transaction('roms','readwrite'); tx.objectStore('roms').put({blob:file,name:file.name,type:file.type,core},'last'); await new Promise((r,j)=>{tx.oncomplete=r;tx.onerror=()=>j(tx.error)}); db.close(); } catch(_) {}
+      }
+      async function restoreRom() {
+        try {
+          const db=await openRomDB(); const data=await new Promise((r,j)=>{const q=db.transaction('roms','readonly').objectStore('roms').get('last');q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)}); db.close();
+          if(!data || !data.blob) return;
+          selectedFile = data.blob instanceof File ? data.blob : new File([data.blob],data.name||'ROM',{type:data.type||'application/octet-stream'});
+          ui.querySelector('#emuFileName').textContent='📦 '+selectedFile.name+' (guardada en este dispositivo)';
+          if(data.core) ui.querySelector('#emuCore').value=data.core;
+          const btn=ui.querySelector('#emuLaunch'); btn.disabled=false; btn.style.background='linear-gradient(135deg,#6c5ce7,#00cec9)'; btn.style.color='#fff'; btn.style.cursor='pointer';
+        } catch(_) {}
+      }
+      restoreRom();
+
       ui.querySelector('#emuFile').addEventListener('change', e => {
         const f = e.target.files && e.target.files[0];
         selectedFile = f || null;
         ui.querySelector('#emuFileName').textContent = f ? f.name : '';
+        if (f) rememberRom(f, ui.querySelector('#emuCore').value);
         const btn = ui.querySelector('#emuLaunch');
         if (f) {
           btn.disabled = false;
@@ -2930,3 +3111,5 @@
   </script>
 </body>
 </html>
+
+<script>window.addEventListener('pagehide',()=>{try{localStorage.setItem('elvergalarga_last_visit',String(Date.now()))}catch(e){}});</script>
