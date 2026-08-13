@@ -550,6 +550,62 @@
     let currentGame = null;
     let animId = null;
 
+    // ========== MANEJO DE ERRORES ==========
+    // Muestra el error al usuario en vez de dejar la pantalla en blanco.
+    function showErrorToast(message) {
+      let toast = document.getElementById('errorToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'errorToast';
+        toast.style.cssText = 'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:9999;max-width:min(90vw,420px);background:#2d1216;border:1px solid #ff4757;color:#ffd7db;padding:0.8rem 1.1rem;border-radius:12px;font-size:0.85rem;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,0.5);cursor:pointer';
+        toast.addEventListener('click', () => toast.remove());
+        document.body.appendChild(toast);
+      }
+      toast.textContent = '⚠ ' + message + ' (toca para cerrar)';
+      clearTimeout(toast.dataset.timer);
+      toast.dataset.timer = setTimeout(() => toast.remove(), 8000);
+    }
+
+    function reportError(context, err) {
+      console.error('[' + context + ']', err);
+      const detail = err && err.message ? err.message : String(err);
+      showErrorToast(context + ': ' + detail);
+    }
+
+    window.addEventListener('error', e => {
+      reportError('Error inesperado', e.error || e.message);
+    });
+    window.addEventListener('unhandledrejection', e => {
+      reportError('Promesa rechazada', e.reason);
+    });
+
+    // localStorage puede lanzar (modo privado, cuota llena, cookies bloqueadas).
+    function storageGet(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch (err) {
+        console.warn('No se pudo leer "' + key + '" de localStorage:', err);
+        return null;
+      }
+    }
+    function storageSet(key, value) {
+      try {
+        localStorage.setItem(key, value);
+        return true;
+      } catch (err) {
+        console.warn('No se pudo guardar "' + key + '" en localStorage:', err);
+        return false;
+      }
+    }
+
+    // Contexto 2D: en navegadores sin canvas devuelve null y el juego reventaría
+    // más tarde con un error confuso.
+    function get2DContext(canvas) {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Este navegador no soporta canvas 2D');
+      return ctx;
+    }
+
     function catLabel(cat) {
       return { arcade:'Arcade', puzzle:'Puzzle', accion:'Acción', clasicos:'Clásicos', multijugador:'Multijugador', '3d':'3D', emulador:'Emulador' }[cat] || cat;
     }
@@ -600,6 +656,31 @@
     });
 
     // ========== ABRIR / CERRAR ==========
+    const GAME_STARTERS = {
+      snake: startSnake,
+      '2048': start2048,
+      flappy: startFlappy,
+      breakout: startBreakout,
+      pong: startPong,
+      memory: startMemory,
+      tictactoe: startTicTacToe,
+      runner: startRunner,
+      clicker: startClicker,
+      minesweeper: startMinesweeper,
+      tetris: startTetris,
+      dodge: startDodge,
+      geodash: startGeoDash,
+      rocket: startRocket,
+      invaders: startInvaders,
+      airhockey: startAirHockey,
+      connect4: startConnect4,
+      basketball: startBasketball,
+      platformer: startPlatformer,
+      sumo3d: startSumo3D,
+      trolljump: startTrollJump,
+      emulator: startEmulator,
+    };
+
     function openGame(id) {
       const game = games.find(g => g.id === id);
       if (!game) return;
@@ -610,29 +691,26 @@
       document.getElementById('playModal').classList.add('open');
       document.body.style.overflow = 'hidden';
 
-      // Lanzar el juego correspondiente
-      if (id === 'snake') startSnake(body);
-      else if (id === '2048') start2048(body);
-      else if (id === 'flappy') startFlappy(body);
-      else if (id === 'breakout') startBreakout(body);
-      else if (id === 'pong') startPong(body);
-      else if (id === 'memory') startMemory(body);
-      else if (id === 'tictactoe') startTicTacToe(body);
-      else if (id === 'runner') startRunner(body);
-      else if (id === 'clicker') startClicker(body);
-      else if (id === 'minesweeper') startMinesweeper(body);
-      else if (id === 'tetris') startTetris(body);
-      else if (id === 'dodge') startDodge(body);
-      else if (id === 'geodash') startGeoDash(body);
-      else if (id === 'rocket') startRocket(body);
-      else if (id === 'invaders') startInvaders(body);
-      else if (id === 'airhockey') startAirHockey(body);
-      else if (id === 'connect4') startConnect4(body);
-      else if (id === 'basketball') startBasketball(body);
-      else if (id === 'platformer') startPlatformer(body);
-      else if (id === 'sumo3d') startSumo3D(body);
-      else if (id === 'trolljump') startTrollJump(body);
-      else if (id === 'emulator') startEmulator(body);
+      const start = GAME_STARTERS[id];
+      if (typeof start !== 'function') {
+        showGameError(body, 'Este juego todavía no está disponible.');
+        reportError('Abrir ' + game.title, new Error('No hay función de inicio para "' + id + '"'));
+        return;
+      }
+      try {
+        start(body);
+      } catch (err) {
+        showGameError(body, 'No se pudo iniciar el juego.');
+        reportError('Abrir ' + game.title, err);
+      }
+    }
+
+    function showGameError(body, message) {
+      body.innerHTML = '';
+      const box = document.createElement('div');
+      box.style.cssText = 'padding:2rem;text-align:center;color:#fd79a8;font-weight:700;line-height:1.5';
+      box.textContent = '⚠ ' + message;
+      body.appendChild(box);
     }
 
     function closeModal() {
@@ -643,6 +721,7 @@
       window.onkeyup = null;
       const emuScript = document.getElementById('emuLoaderScript');
       if (emuScript) emuScript.remove();
+      releaseEmuObjectUrl();
       document.getElementById('modalBody').innerHTML = '';
       currentGame = null;
     }
@@ -665,7 +744,15 @@
       const ov = document.createElement('div');
       ov.className = 'game-overlay';
       ov.innerHTML = `<h3>${title}</h3><p>${text}</p><button>${btnText}</button>`;
-      ov.querySelector('button').onclick = () => { ov.remove(); onStart(); };
+      ov.querySelector('button').onclick = () => {
+        ov.remove();
+        try {
+          onStart();
+        } catch (err) {
+          reportError('Iniciar ' + title, err);
+          showGameError(body, 'No se pudo iniciar el juego.');
+        }
+      };
       body.appendChild(ov);
       return ov;
     }
@@ -803,7 +890,7 @@
       const COLS = 20, ROWS = 20, SIZE = 20;
       let snake = [{x:10,y:10}], dir = {x:1,y:0}, nextDir = {x:1,y:0};
       let food = {x:15,y:15}, score = 0, combo = 0, dead = false, loop = null;
-      let best = parseInt(localStorage.getItem('snakeBest') || '0', 10) || 0;
+      let best = parseInt(storageGet('snakeBest') || '0', 10) || 0;
 
       // Texturas simples (escalas + ojos)
       function drawSegment(x, y, isHead) {
@@ -960,7 +1047,9 @@
           dead = true;
           if (score > best) {
             best = score;
-            try { localStorage.setItem('snakeBest', String(best)); } catch (_) {}
+            if (!storageSet('snakeBest', String(best))) {
+              showErrorToast('No se pudo guardar el récord (almacenamiento no disponible)');
+            }
           }
           draw();
           return;
@@ -1892,13 +1981,23 @@
       };
 
       function loadScript(src, ms) {
+        let script = null;
+        let timer = null;
+        const cleanup = () => {
+          if (timer) clearTimeout(timer);
+          if (script && !window.THREE) script.remove();
+        };
         return Promise.race([
           new Promise((resolve, reject) => {
             if (window.THREE) return resolve();
-            const s = document.createElement('script'); s.src = src; s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
+            script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = () => reject(new Error('No se pudo cargar ' + src));
+            document.head.appendChild(script);
           }),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
-        ]);
+          new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('Tiempo de espera agotado cargando ' + src)), ms); })
+        ]).then(res => { cleanup(); return res; }, err => { cleanup(); throw err; });
       }
       overlay.querySelector('#rl3d').onclick = async (e) => {
         e.stopPropagation();
@@ -1909,8 +2008,15 @@
           await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 4000);
           startRocket3D(wrap, overlay, scoreEl, hintEl);
         } catch (err) {
-          status.textContent = '3D bloqueado por la proxy del cole · usando modo local...';
-          setTimeout(() => startRocket25D(wrap, overlay, scoreEl, hintEl), 500);
+          console.warn('Modo 3D no disponible, usando modo local:', err);
+          status.textContent = '3D no disponible (' + (err && err.message ? err.message : err) + ') · usando modo local...';
+          setTimeout(() => {
+            try {
+              startRocket25D(wrap, overlay, scoreEl, hintEl);
+            } catch (fallbackErr) {
+              reportError('Rocket League .io', fallbackErr);
+            }
+          }, 500);
         }
       };
     }
@@ -2522,6 +2628,17 @@
     // Juego ORIGINAL inspirado en platformers troll.
     // NO es Level Devil. Level Devil © Unept / Level Devil B.V. → playleveldevil.com
     // ========== EMULADOR RETRO (EmulatorJS · ROM del usuario) ==========
+    let emuObjectUrl = null;
+    function releaseEmuObjectUrl() {
+      if (!emuObjectUrl) return;
+      try {
+        URL.revokeObjectURL(emuObjectUrl);
+      } catch (err) {
+        console.warn('No se pudo liberar la URL de la ROM:', err);
+      }
+      emuObjectUrl = null;
+    }
+
     function startEmulator(body) {
       body.innerHTML = '';
       const wrap = document.createElement('div');
@@ -2572,14 +2689,20 @@
       wrap.appendChild(gameBox);
 
       let selectedFile = null;
-      let objectUrl = null;
 
       ui.querySelector('#emuFile').addEventListener('change', e => {
         const f = e.target.files && e.target.files[0];
-        selectedFile = f || null;
-        ui.querySelector('#emuFileName').textContent = f ? f.name : '';
+        if (f && f.size === 0) {
+          showErrorToast('La ROM seleccionada está vacía o no se pudo leer');
+          e.target.value = '';
+          selectedFile = null;
+        } else {
+          selectedFile = f || null;
+        }
+        const shown = selectedFile;
+        ui.querySelector('#emuFileName').textContent = shown ? shown.name : '';
         const btn = ui.querySelector('#emuLaunch');
-        if (f) {
+        if (shown) {
           btn.disabled = false;
           btn.style.background = 'linear-gradient(135deg,#6c5ce7,#00cec9)';
           btn.style.color = '#fff';
@@ -2595,20 +2718,30 @@
       ui.querySelector('#emuLaunch').addEventListener('click', () => {
         if (!selectedFile) return;
         const core = ui.querySelector('#emuCore').value;
-        if (objectUrl) URL.revokeObjectURL(objectUrl);
-        objectUrl = URL.createObjectURL(selectedFile);
+        releaseEmuObjectUrl();
+        try {
+          emuObjectUrl = URL.createObjectURL(selectedFile);
+        } catch (err) {
+          reportError('Emulador', err);
+          return;
+        }
 
         ui.style.display = 'none';
         gameBox.style.display = 'block';
         gameBox.innerHTML = '<div id="emuPlayer" style="width:100%;height:100%;min-height:320px"></div>';
 
         ['EJS_player','EJS_core','EJS_gameUrl','EJS_pathtodata','EJS_gameName','EJS_color','EJS_startOnLoaded','EJS_language'].forEach(k => {
-          try { delete window[k]; } catch (_) {}
+          try {
+            delete window[k];
+          } catch (err) {
+            console.warn('No se pudo borrar window.' + k + ', se sobrescribe:', err);
+            window[k] = undefined;
+          }
         });
 
         window.EJS_player = '#emuPlayer';
         window.EJS_core = core;
-        window.EJS_gameUrl = objectUrl;
+        window.EJS_gameUrl = emuObjectUrl;
         window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
         window.EJS_gameName = selectedFile.name;
         window.EJS_color = '#6c5ce7';
@@ -2621,7 +2754,9 @@
         s.id = 'emuLoaderScript';
         s.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
         s.onerror = () => {
+          releaseEmuObjectUrl();
           gameBox.innerHTML = '<div style="padding:2rem;text-align:center;color:#fd79a8">No se pudo cargar el emulador (CDN bloqueado o sin internet).</div>';
+          console.error('Fallo al cargar el loader de EmulatorJS:', s.src);
         };
         document.body.appendChild(s);
       });
@@ -2629,7 +2764,8 @@
 
     function startTrollJump(body) {
       const W = 480, H = 360;
-      const { canvas, ctx } = makeCanvas(body, W, H);
+      const canvas = makeCanvas(body, W, H);
+      const ctx = get2DContext(canvas);
       const hud = document.createElement('div');
       hud.style.cssText = 'text-align:center;color:#aaa;font-size:0.85rem;margin-top:6px';
       hud.innerHTML = '← → mover · Espacio/↑ saltar · R reiniciar nivel<br><span style="color:#fd79a8;font-size:0.75rem">ORIGINAL · Inspirado en platformers troll · Level Devil es de Unept → playleveldevil.com</span>';
