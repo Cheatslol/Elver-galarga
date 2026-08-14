@@ -726,8 +726,18 @@
       if (animId) { cancelAnimationFrame(animId); animId = null; }
       window.onkeydown = null;
       window.onkeyup = null;
+      // EmulatorJS can keep WASM/worker resources alive after the DOM is removed.
+      // Explicitly tear down the player before clearing the modal to prevent
+      // multiple emulators accumulating and causing severe lag.
+      try {
+        if (window.EJS_emulator && typeof window.EJS_emulator.exit === 'function') {
+          window.EJS_emulator.exit();
+        }
+      } catch (_) {}
       const emuScript = document.getElementById('emuLoaderScript');
       if (emuScript) emuScript.remove();
+      try { if (window.__emuObjectUrl) URL.revokeObjectURL(window.__emuObjectUrl); } catch (_) {}
+      window.__emuObjectUrl = null;
       document.getElementById('modalBody').innerHTML = '';
       currentGame = null;
     }
@@ -2763,13 +2773,20 @@
         try { return JSON.parse(localStorage.getItem('elvergalarga_emulator_settings_v1') || '{}'); } catch (_) { return {}; }
       })();
       window.EJS_color = '#6c5ce7';
-      window.EJS_startOnLoaded = true;
+      window.EJS_startOnLoaded = false;
       window.EJS_language = 'es';
       window.EJS_volume = typeof emuPrefs.volume === 'number' ? emuPrefs.volume : 0.7;
-      window.EJS_fixedSaveInterval = 7000;
-      window.EJS_cacheConfig = { enabled: true, cacheMaxSizeMB: 1024, cacheMaxAgeMins: 7200 };
-      // Threads solo si el navegador/hosting permite SharedArrayBuffer.
-      window.EJS_threads = !!(emuPrefs.performance && window.crossOriginIsolated);
+      // Turbo: use threads only when the browser explicitly exposes SharedArrayBuffer.
+      window.EJS_threads = !!window.crossOriginIsolated && typeof SharedArrayBuffer !== 'undefined';
+      // Keep WebGL2 enabled when available; don't force the slower legacy renderer.
+      window.EJS_forceLegacyCores = false;
+      // Save less frequently to avoid disk/IndexedDB work during gameplay.
+      window.EJS_fixedSaveInterval = 30000;
+      window.EJS_cacheConfig = {
+        enabled: true,
+        cacheMaxSizeMB: 2048,
+        cacheMaxAgeMins: 10080
+      };
       window.EJS_Buttons = {
         saveState: true, loadState: true,
         quickSave: true, quickLoad: true,
@@ -2778,6 +2795,8 @@
         exitEmulation: true
       };
 
+      // Never stack loader scripts: repeated launches can otherwise leave old
+      // emulator workers alive and make the page progressively slower.
       const old = document.getElementById('emuLoaderScript');
       if (old) old.remove();
       const loading = document.createElement('div');
@@ -2897,14 +2916,15 @@
             <option value="performance">Rendimiento</option>
             <option value="battery">Ahorro</option>
           </select>
-          <label style="font-size:.8rem;color:#a0a0c0">🔊 Volumen</label>
-          <input id="emuVolume" type="range" min="0" max="1" step=".05" value=".7" style="width:110px">
+          <label style="font-size:.8rem;color:#a0a0c0">⚡ Modo</label><select id="emuTurbo" style="background:#1a1a2e;color:#fff;border:1px solid #444;border-radius:8px;padding:7px 10px;font-family:inherit;font-weight:700"><option value="turbo">Turbo</option><option value="balanced">Equilibrado</option></select><label style="font-size:.8rem;color:#a0a0c0">🔊 Volumen</label>
+          <input id="emuVolume" type="range" min="0" max="1" step=".05" value=".7" style="width:110px"><div id="emuDsHint" style="display:none;width:100%;font-size:.72rem;color:#a0a0c0;">DS: Turbo prioriza fluidez. Si aún va lento, usa frameskip 1 desde Settings del emulador.</div>
         </div>
         <button id="emuLaunch" disabled style="background:#2d3436;color:#888;border:none;padding:0.7rem 1.6rem;border-radius:50px;font-weight:800;font-family:inherit;cursor:not-allowed;margin-top:4px">▶ Jugar</button>
         <div style="color:#a0a0c0;font-size:0.75rem;max-width:360px;margin-top:8px;line-height:1.4">
           Mira la categoría <strong>💿 ROMs</strong> para juegos homebrew gratis listos para jugar.<br>
           Los juegos del emulador usan sus propios guardados/estados de EmulatorJS.<br>
-          <span style="color:#fd79a8">No publiques ROMs comerciales sin permiso del titular.</span>
+          <span style="color:#fd79a8">No publiques ROMs comerciales sin permiso del titular.</span><br>
+          <span style="color:#74b9ff">💡 Rendimiento: usa Chrome/Firefox actualizado y cierra otras pestañas pesadas.</span>
         </div>
       `;
       wrap.appendChild(ui);
@@ -2946,20 +2966,26 @@
       try {
         const p = JSON.parse(localStorage.getItem('elvergalarga_emulator_settings_v1') || '{}');
         ui.querySelector('#emuPerf').value = p.performance ? 'performance' : (p.battery ? 'battery' : 'balanced');
+        if (ui.querySelector('#emuTurbo')) ui.querySelector('#emuTurbo').value = p.turbo === false ? 'balanced' : 'turbo';
         ui.querySelector('#emuVolume').value = typeof p.volume === 'number' ? p.volume : 0.7;
       } catch (_) {}
       const saveEmuPrefs = () => {
         const mode = ui.querySelector('#emuPerf').value;
+        const turbo = ui.querySelector('#emuTurbo')?.value === 'turbo';
         const volume = Number(ui.querySelector('#emuVolume').value);
         try {
           localStorage.setItem('elvergalarga_emulator_settings_v1', JSON.stringify({
             performance: mode === 'performance',
             battery: mode === 'battery',
+            turbo,
             volume
           }));
         } catch (_) {}
+        const hint = ui.querySelector('#emuDsHint');
+        if (hint) hint.style.display = /ds/i.test(String(window.EJS_core || '')) ? 'block' : 'none';
       };
       ui.querySelector('#emuPerf').addEventListener('change', saveEmuPrefs);
+      ui.querySelector('#emuTurbo')?.addEventListener('change', saveEmuPrefs);
       ui.querySelector('#emuVolume').addEventListener('input', saveEmuPrefs);
 
       restoreRom();
@@ -2967,6 +2993,7 @@
       ui.querySelector('#emuFile').addEventListener('change', e => {
         const f = e.target.files && e.target.files[0];
         selectedFile = f || null;
+        if (window.__emuObjectUrl) { try { URL.revokeObjectURL(window.__emuObjectUrl); } catch (_) {} window.__emuObjectUrl = null; }
         ui.querySelector('#emuFileName').textContent = f ? f.name : '';
         if (f) rememberRom(f, ui.querySelector('#emuCore').value);
         const btn = ui.querySelector('#emuLaunch');
