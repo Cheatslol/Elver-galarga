@@ -457,7 +457,8 @@
     <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1rem;max-width:780px;line-height:1.5">
       La categoría <strong>💿 ROMs</strong> de arriba ya trae 20 ROMs homebrew listas para jugar o descargar.
       Aquí hay más catálogos de <strong>homebrew, dominio público y freeware</strong>: descárgalas y
-      ábrelas en <strong>Emulador Retro</strong>. 
+      ábrelas en <strong>Emulador Retro</strong>. No se enlazan ROMs comerciales (Pokémon, Mario, etc.
+      tienen copyright y no se pueden distribuir).
     </p>
     <div style="display:flex;flex-wrap:wrap;gap:1rem;">
       <a href="https://itch.io/games/free/tag-homebrew/tag-nes-rom" target="_blank" rel="noopener"
@@ -585,19 +586,27 @@
       { id: 'papicommando', title: 'Papi Commando Remix', author: 'WaterMelon', core: 'segaMD', sys: 'Mega Drive', file: 'md-games/master/papicommandoremix.bin', emoji: '🎅', color: 'linear-gradient(135deg,#d63031,#00b894)', desc: 'Run and gun navideño con mucha acción.' },
       { id: 'hilda', title: 'Hilda', author: 'O_manko', core: 'snes', sys: 'SNES', file: 'snes-games/master/hilda.sfc', emoji: '🧙', color: 'linear-gradient(135deg,#fd79a8,#6c5ce7)', desc: 'Plataformas homebrew para Super Nintendo.' },
       { id: 'nwarp', title: 'N-Warp Daisakusen', author: 'Kannagi / homebrew', core: 'snes', sys: 'SNES', file: 'snes-games/master/nwarpdaisakusen.smc', emoji: '🥊', color: 'linear-gradient(135deg,#00b894,#fdcb6e)', desc: 'Peleas multijugador rápidas hasta 4 jugadores.' },
+      { id: 'pokemon-soulsilver-local', title: 'Pokémon SoulSilver (ROM local)', author: 'Archivo local', core: 'desmume2015', sys: 'Nintendo DS', file: 'roms/Pokemon - SoulSilver Version (Europe).nds', local: true, emoji: '💎', color: 'linear-gradient(135deg,#636e72,#0984e3)', desc: 'ROM local de Nintendo DS. Se ejecuta con el núcleo DeSmuME 2015.' },
+      { id: 'pokemon-leafgreen-local', title: 'Pokémon LeafGreen (ROM local)', author: 'Archivo local', core: 'gba', sys: 'Game Boy Advance', file: 'roms/Pokemon - Leaf Green (USA) (Pirate).gba', local: true, emoji: '🌿', color: 'linear-gradient(135deg,#00b894,#55efc4)', desc: 'ROM local de Game Boy Advance.' },
+      { id: 'pokemon-blue-local', title: 'Pokémon Blue (ROM local)', author: 'Archivo local', core: 'gb', sys: 'Game Boy', file: 'roms/Pokemon Blue.gb', local: true, emoji: '🔵', color: 'linear-gradient(135deg,#0984e3,#74b9ff)', desc: 'ROM local de Game Boy.' },
+      { id: 'pokemon-emerald-local', title: 'Pokémon Emerald (ROM local)', author: 'Archivo local', core: 'gba', sys: 'Game Boy Advance', file: 'roms/Pokemon - Emerald Version (USA, Europe).gba', local: true, emoji: '🟢', color: 'linear-gradient(135deg,#00b894,#0984e3)', desc: 'ROM local cargada desde tu archivo. No se descarga desde terceros.' },
     ];
-    const romUrl = rom => `${ROM_BASE}/${rom.file}`;
+    const romUrl = rom => rom.local ? rom.file : `${ROM_BASE}/${rom.file}`;
     const romFileName = rom => rom.file.split('/').pop();
 
+    let romSystemFilter = 'all';
     function renderRomLibrary() {
       const grid = document.getElementById('gamesGrid');
-      const filtered = romLibrary.filter(r => !searchQuery ||
-        r.title.toLowerCase().includes(searchQuery) || r.sys.toLowerCase().includes(searchQuery));
+      const systems = ['all', ...new Set(romLibrary.map(r => r.sys))];
+      const filterHtml = `<div style="grid-column:1/-1;display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:4px;">
+        ${systems.map(s => `<button type="button" data-romsys="${s}" style="border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.45rem .8rem;background:${romSystemFilter===s?'#6c5ce7':'#2d3436'};color:#fff;font-weight:800;cursor:pointer">${s==='all'?'🎮 Todos':s}</button>`).join('')}
+      </div>`;
+      const filtered = romLibrary.filter(r => (romSystemFilter === 'all' || r.sys === romSystemFilter) &&
+        (!searchQuery || r.title.toLowerCase().includes(searchQuery) || r.sys.toLowerCase().includes(searchQuery)));
       if (!filtered.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="emoji">😢</div><h3>No hay ROMs</h3></div>';
-        return;
-      }
-      grid.innerHTML = filtered.map(r => `
+        grid.innerHTML = filterHtml + '<div class="empty-state" style="grid-column:1/-1"><div class="emoji">😢</div><h3>No hay ROMs en esta categoría</h3></div>';
+      } else {
+        grid.innerHTML = filterHtml + filtered.map(r => `
         <article class="game-card" onclick="openRom('${r.id}')">
           <div class="game-thumb" style="background:${r.color}">${r.emoji}</div>
           <div class="game-info">
@@ -606,6 +615,11 @@
           </div>
         </article>
       `).join('');
+      }
+      grid.querySelectorAll('[data-romsys]').forEach(btn => btn.addEventListener('click', () => {
+        romSystemFilter = btn.dataset.romsys;
+        renderRomLibrary();
+      }));
     }
 
     function renderGames() {
@@ -1623,22 +1637,19 @@
     }
     // CLICKER_LOGIC_END
 
+    // Cookie Clicker es SOLO de esta sesión: no se guarda progreso al cerrar/recargar.
     function clickerLoadState() {
-      let raw = null;
-      try {
-        raw = JSON.parse(localStorage.getItem(CLICKER_SAVE_KEY) || localStorage.getItem('elvergalarga_cookie_clicker_v2') || '{}');
-      } catch (_) {}
-      return clickerSanitize(raw);
+      return clickerSanitize({});
     }
-    function clickerSaveState(state) {
-      try { localStorage.setItem(CLICKER_SAVE_KEY, JSON.stringify(state)); } catch (_) {}
+    function clickerSaveState(_) {
+      // Intencionalmente vacío: Cookie Clicker no persiste progreso.
     }
 
     function startClicker(body) {
       body.style.position = '';
       body.style.overflow = '';
       const state = clickerLoadState();
-      let last = Date.now(), lastSave = Date.now();
+      let last = Date.now();
 
       const wrap = document.createElement('div');
       wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;width:100%;height:100%;justify-content:center;overflow:auto;box-sizing:border-box;';
@@ -1706,11 +1717,11 @@
         update();
       };
       const tick = setInterval(() => {
-        if (currentGame !== 'clicker') { clearInterval(tick); clickerSaveState(state); return; }
+        if (currentGame !== 'clicker') { clearInterval(tick); return; }
         const now = Date.now();
         state.cookies += clickerProduction(state.owned) * Math.min((now-last)/1000, 5);
         last = now;
-        if (now - lastSave >= 2000) { lastSave = now; clickerSaveState(state); }
+        // Sin guardado: el progreso se reinicia al salir/recargar.
         update();
       }, 200);
       syncShop();
@@ -2738,7 +2749,7 @@
     function bootEmulator(gameBox, core, gameUrl, gameName) {
       gameBox.innerHTML = '<div id="emuPlayer" style="width:100%;height:100%;min-height:320px"></div>';
 
-      ['EJS_player','EJS_core','EJS_gameUrl','EJS_pathtodata','EJS_gameName','EJS_color','EJS_startOnLoaded','EJS_language'].forEach(k => {
+      ['EJS_player','EJS_core','EJS_gameUrl','EJS_pathtodata','EJS_gameName','EJS_gameID','EJS_color','EJS_startOnLoaded','EJS_language','EJS_volume','EJS_fixedSaveInterval','EJS_threads','EJS_Buttons','EJS_biosUrl'].forEach(k => {
         try { delete window[k]; } catch (_) {}
       });
 
@@ -2747,15 +2758,36 @@
       window.EJS_gameUrl = gameUrl;
       window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
       window.EJS_gameName = gameName;
+      window.EJS_gameID = Math.abs([...String(gameName)].reduce((h,c) => ((h << 5) - h + c.charCodeAt(0)) | 0, 0)) || 1;
+      const emuPrefs = (() => {
+        try { return JSON.parse(localStorage.getItem('elvergalarga_emulator_settings_v1') || '{}'); } catch (_) { return {}; }
+      })();
       window.EJS_color = '#6c5ce7';
       window.EJS_startOnLoaded = true;
       window.EJS_language = 'es';
+      window.EJS_volume = typeof emuPrefs.volume === 'number' ? emuPrefs.volume : 0.7;
+      window.EJS_fixedSaveInterval = 7000;
+      window.EJS_cacheConfig = { enabled: true, cacheMaxSizeMB: 1024, cacheMaxAgeMins: 7200 };
+      // Threads solo si el navegador/hosting permite SharedArrayBuffer.
+      window.EJS_threads = !!(emuPrefs.performance && window.crossOriginIsolated);
+      window.EJS_Buttons = {
+        saveState: true, loadState: true,
+        quickSave: true, quickLoad: true,
+        saveSavFiles: true, loadSavFiles: true,
+        fullscreen: true, settings: true, volume: true,
+        exitEmulation: true
+      };
 
       const old = document.getElementById('emuLoaderScript');
       if (old) old.remove();
+      const loading = document.createElement('div');
+      loading.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:#a0a0c0;font-weight:700;z-index:2;pointer-events:none;';
+      loading.textContent = '⏳ Cargando emulador… (la primera vez puede tardar por los archivos del núcleo)';
+      gameBox.appendChild(loading);
       const s = document.createElement('script');
       s.id = 'emuLoaderScript';
       s.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+      s.onload = () => setTimeout(() => loading.remove(), 1200);
       s.onerror = () => {
         gameBox.innerHTML = '<div style="padding:2rem;text-align:center;color:#fd79a8">No se pudo cargar el emulador (CDN bloqueado o sin internet).</div>';
       };
@@ -2783,7 +2815,7 @@
         <a id="romDownload" href="${url}" download="${romFileName(rom)}" style="color:#fdcb6e;font-size:0.82rem;font-weight:700;text-decoration:none">⬇ Descargar ROM (${romFileName(rom)})</a>
         <div id="romStatus" style="color:#a0a0c0;font-size:0.78rem;min-height:1.2em"></div>
         <div style="color:#a0a0c0;font-size:0.72rem;max-width:360px;line-height:1.4">
-          Homebrew publicado por su autor para descarga libre (colección retrobrews).
+          ${rom.local ? 'ROM local: se mantiene como archivo de tu sitio/dispositivo. Si la publicas, verifica que tengas derecho a redistribuirla.' : 'Homebrew publicado por su autor para descarga libre (colección retrobrews).'}
         </div>
       `;
       wrap.appendChild(ui);
@@ -2848,6 +2880,7 @@
             <option value="segaMD">Mega Drive / Genesis</option>
             <option value="segaMS">Master System</option>
             <option value="n64">Nintendo 64</option>
+            <option value="nds">Nintendo DS</option>
             <option value="psx">PlayStation 1</option>
             <option value="atari2600">Atari 2600</option>
           </select>
@@ -2857,10 +2890,21 @@
           <input type="file" id="emuFile" accept=".nes,.fds,.unf,.unif,.gb,.gbc,.gba,.smc,.sfc,.md,.gen,.bin,.sms,.gg,.n64,.z64,.v64,.iso,.cue,.chd,.a26,.zip" style="display:none">
         </label>
         <div id="emuFileName" style="color:#00cec9;font-size:0.82rem;font-weight:700;min-height:1.2em"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;background:#151522;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;width:min(520px,100%);">
+          <label style="font-size:.8rem;color:#a0a0c0">⚙️ Optimización</label>
+          <select id="emuPerf" style="background:#1a1a2e;color:#fff;border:1px solid #444;border-radius:8px;padding:7px 10px;font-family:inherit;font-weight:700">
+            <option value="balanced">Equilibrado</option>
+            <option value="performance">Rendimiento</option>
+            <option value="battery">Ahorro</option>
+          </select>
+          <label style="font-size:.8rem;color:#a0a0c0">🔊 Volumen</label>
+          <input id="emuVolume" type="range" min="0" max="1" step=".05" value=".7" style="width:110px">
+        </div>
         <button id="emuLaunch" disabled style="background:#2d3436;color:#888;border:none;padding:0.7rem 1.6rem;border-radius:50px;font-weight:800;font-family:inherit;cursor:not-allowed;margin-top:4px">▶ Jugar</button>
         <div style="color:#a0a0c0;font-size:0.75rem;max-width:360px;margin-top:8px;line-height:1.4">
-          Mira la categoría <strong>💿 ROMs</strong> para 20 juegos homebrew gratis listos para jugar.<br>
-          <span style="color:#fd79a8">No uses ROMs comerciales que no poseas.</span>
+          Mira la categoría <strong>💿 ROMs</strong> para juegos homebrew gratis listos para jugar.<br>
+          Los juegos del emulador usan sus propios guardados/estados de EmulatorJS.<br>
+          <span style="color:#fd79a8">No publiques ROMs comerciales sin permiso del titular.</span>
         </div>
       `;
       wrap.appendChild(ui);
@@ -2898,6 +2942,26 @@
           const btn=ui.querySelector('#emuLaunch'); btn.disabled=false; btn.style.background='linear-gradient(135deg,#6c5ce7,#00cec9)'; btn.style.color='#fff'; btn.style.cursor='pointer';
         } catch(_) {}
       }
+      // Preferencias del emulador sí se guardan; el progreso del Cookie Clicker no.
+      try {
+        const p = JSON.parse(localStorage.getItem('elvergalarga_emulator_settings_v1') || '{}');
+        ui.querySelector('#emuPerf').value = p.performance ? 'performance' : (p.battery ? 'battery' : 'balanced');
+        ui.querySelector('#emuVolume').value = typeof p.volume === 'number' ? p.volume : 0.7;
+      } catch (_) {}
+      const saveEmuPrefs = () => {
+        const mode = ui.querySelector('#emuPerf').value;
+        const volume = Number(ui.querySelector('#emuVolume').value);
+        try {
+          localStorage.setItem('elvergalarga_emulator_settings_v1', JSON.stringify({
+            performance: mode === 'performance',
+            battery: mode === 'battery',
+            volume
+          }));
+        } catch (_) {}
+      };
+      ui.querySelector('#emuPerf').addEventListener('change', saveEmuPrefs);
+      ui.querySelector('#emuVolume').addEventListener('input', saveEmuPrefs);
+
       restoreRom();
 
       ui.querySelector('#emuFile').addEventListener('change', e => {
@@ -2921,7 +2985,8 @@
 
       ui.querySelector('#emuLaunch').addEventListener('click', () => {
         if (!selectedFile) return;
-        const core = ui.querySelector('#emuCore').value;
+        let core = ui.querySelector('#emuCore').value;
+        if (core === 'nds') core = 'desmume2015';
         if (objectUrl) URL.revokeObjectURL(objectUrl);
         objectUrl = URL.createObjectURL(selectedFile);
 
