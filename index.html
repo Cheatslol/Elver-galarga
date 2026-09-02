@@ -5,8 +5,8 @@
      crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> - Poki no es</title>
-  <meta name="description" content=". 67bypass." />
+  <title>Juegos — Arcade y ROMs</title>
+  <meta name="description" content="Juegos gratis, arcade y emulador retro para PC y celular." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
@@ -228,6 +228,20 @@
       .nav-cats { display: none; }
       .menu-toggle { display: block; }
     }
+    .game-card, button, .hero-cta, .modal-close, .pill, .nav-cat, label { -webkit-tap-highlight-color: transparent; }
+    .game-card { will-change: transform; user-select: none; -webkit-user-select: none; }
+    .game-card:active { transform: translateY(-2px) scale(0.975); box-shadow: 0 6px 18px rgba(108,92,231,0.28); }
+    button:active, .hero-cta:active, label:active { transform: scale(0.96); }
+    .game-thumb { overflow: hidden; }
+    .game-thumb img { transition: transform .28s cubic-bezier(.2,.8,.2,1), filter .28s; }
+    .game-card:hover .game-thumb img, .game-card:active .game-thumb img { transform: scale(1.08); filter: brightness(1.08) saturate(1.1); }
+    canvas { touch-action: none; user-select: none; -webkit-user-select: none; }
+    #emuPlayer { width:100% !important; height:100% !important; min-height:0 !important; }
+    #emuPlayer canvas, #emuGameBox canvas { max-width:100%; max-height:100%; }
+    .touch-pad button { transition: transform .08s ease, background .08s ease, box-shadow .08s ease; }
+    .touch-pad button:active { transform: scale(.90) !important; box-shadow: 0 2px 7px rgba(0,0,0,.35) !important; }
+    @media (pointer: coarse) { .game-card:hover { transform:none; box-shadow:none; } }
+
     @media (max-width: 600px) {
       .games-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem; }
       .logo span { display: none; }
@@ -239,7 +253,7 @@
     <div class="header-inner">
       <a href="#" class="logo" onclick="filterCategory('all'); return false;">
         <div class="logo-icon">🎮</div>
-        <span>El Vergalarga</span>
+        <span>by jochito</span>
       </a>
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
@@ -510,7 +524,7 @@
   </section>
 
   <footer>
-    <p>© 2026 El Vergalarga — Juegos locales + emulador + ROMs legales.</p>
+    <p>© 2026 — Juegos locales + emulador + ROMs legales.</p>
     <p style="margin-top:0.4rem;font-size:0.8rem;opacity:0.7;">Local sin Poki · Emulador: solo ROMs del usuario · Externos en itch.io</p>
   </footer>
 
@@ -564,7 +578,9 @@
     // Todas las ROMs son homebrew publicadas por sus autores para descarga libre
     // (colección retrobrews). No hay ROMs comerciales: los juegos de Nintendo,
     // Sega, etc. siguen con copyright y no se pueden distribuir aquí.
-    const ROM_BASE = 'https://raw.githubusercontent.com/retrobrews';
+    // CDN principal; GitHub Raw queda como respaldo. Un filtro escolar puede bloquear ambos.
+    const ROM_CDN = 'https://cdn.jsdelivr.net/gh/retrobrews';
+    const ROM_RAW = 'https://raw.githubusercontent.com/retrobrews';
     const romLibrary = [
       { id: 'nomolos', title: 'Nomolos: Storming the Catsle', author: 'Gradual Games', core: 'nes', sys: 'NES', file: 'nes-games/master/nomolos.nes', emoji: '🐱', color: 'linear-gradient(135deg,#d63031,#fdcb6e)', desc: 'Plataformas de acción al estilo 8 bits clásico.' },
       { id: 'owlia', title: 'The Legends of Owlia', author: 'Gradual Games', core: 'nes', sys: 'NES', file: 'nes-games/master/owlia.nes', emoji: '🦉', color: 'linear-gradient(135deg,#0984e3,#00cec9)', desc: 'Aventura de acción con exploración y jefes.' },
@@ -591,7 +607,10 @@
       { id: 'pokemon-blue-local', title: 'Pokémon Blue (ROM local)', author: 'Archivo local', core: 'gb', sys: 'Game Boy', file: 'roms/Pokemon Blue.gb', local: true, emoji: '🔵', color: 'linear-gradient(135deg,#0984e3,#74b9ff)', desc: 'ROM local de Game Boy.' },
       { id: 'pokemon-emerald-local', title: 'Pokémon Emerald (ROM local)', author: 'Archivo local', core: 'gba', sys: 'Game Boy Advance', file: 'roms/Pokemon - Emerald Version (USA, Europe).gba', local: true, emoji: '🟢', color: 'linear-gradient(135deg,#00b894,#0984e3)', desc: 'ROM local cargada desde tu archivo. No se descarga desde terceros.' },
     ];
-    const romUrl = rom => rom.local ? rom.file : `${ROM_BASE}/${rom.file}`;
+    const romRepo = rom => rom.file.split('/')[0];
+    const romPath = rom => rom.file.split('/').slice(1).join('/');
+    const romUrl = rom => rom.local ? rom.file : `${ROM_CDN}/${romRepo(rom)}/${romPath(rom)}`;
+    const romRawUrl = rom => rom.local ? rom.file : `${ROM_RAW}/${romRepo(rom)}/${romPath(rom)}`;
     const romFileName = rom => rom.file.split('/').pop();
 
     let romSystemFilter = 'all';
@@ -1556,7 +1575,7 @@
 
     // ========== 9. COOKIE CLICKER ==========
     // CLICKER_LOGIC_START (probado en tests/clicker.test.mjs)
-    const CLICKER_SAVE_KEY = 'elvergalarga_cookie_clicker_v3';
+    const CLICKER_SAVE_KEY = 'gamehub_cookie_clicker_v3';
     // Tienda fija: compra ilimitada, el precio sube 25% por unidad.
     const CLICKER_FIXED = [
       {id:'cursor', name:'Cursor', icon:'🖱️', baseCost:15, add:0.1, desc:'+0.1/s'},
@@ -2342,91 +2361,39 @@
 
     // ========== 15. SPACE INVADERS ==========
     function startInvaders(body) {
-      const W = 480, H = 500;
-      const canvas = makeCanvas(body, W, H);
-      const ctx = canvas.getContext('2d');
-      let player, bullets, enemyBullets, enemies, score, lives, dead, dir, edgeTimer, fireCooldown;
-      const keys = { left:false, right:false, fire:false };
-      const barriers = [120,240,360].map(x => ({ x:x-42, y:H-145, blocks:[] }));
-
-      function resetBarriers() {
-        barriers.forEach(b => {
-          b.blocks = [];
-          for (let yy=0; yy<4; yy++) for (let xx=0; xx<8; xx++) {
-            if ((yy===3 && (xx<2 || xx>5)) || (yy===0 && (xx===0 || xx===7))) continue;
-            b.blocks.push({x:b.x+xx*10,y:b.y+yy*8,hp:2});
-          }
-        });
-      }
-      function reset() {
-        player = { x:W/2-22, y:H-55, w:44, h:18, speed:6 };
-        bullets=[]; enemyBullets=[]; score=0; lives=3; dead=false; dir=1; edgeTimer=0; fireCooldown=0;
-        enemies=[];
-        for (let r=0;r<5;r++) for (let c=0;c<9;c++) enemies.push({x:58+c*42,y:55+r*30,w:28,h:18,alive:true,row:r});
-        resetBarriers();
-      }
+      const W=480,H=500,canvas=makeCanvas(body,W,H),ctx=canvas.getContext('2d');
+      canvas.style.cssText += ';width:min(480px,100%);height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none;';
+      let player,bullets,enemyBullets,enemies,score,lives,dead,dir,fireCooldown,lastTime,invulnerable;
+      const keys={left:false,right:false,fire:false},particles=[];
+      const stars=Array.from({length:90},(_,i)=>({x:(i*83)%W,y:(i*47)%H,r:i%3===0?1.5:1,a:.25+(i%5)*.12}));
+      const barriers=[120,240,360].map(x=>({x:x-42,y:H-145,blocks:[]}));
+      function resetBarriers(){barriers.forEach(b=>{b.blocks=[];for(let yy=0;yy<4;yy++)for(let xx=0;xx<8;xx++){if((yy===3&&(xx<2||xx>5))||(yy===0&&(xx===0||xx===7)))continue;b.blocks.push({x:b.x+xx*10,y:b.y+yy*8,hp:3});}})}
+      function reset(){player={x:W/2-28,y:H-58,w:56,h:20,speed:760};bullets=[];enemyBullets=[];score=0;lives=8;dead=false;dir=1;fireCooldown=0;lastTime=performance.now();invulnerable=0;enemies=[];for(let r=0;r<5;r++)for(let c=0;c<9;c++)enemies.push({x:58+c*42,y:55+r*30,w:28,h:18,alive:true,row:r});particles.length=0;resetBarriers()}
       reset();
-      function sprite(x,y,row,flip=false) {
-        ctx.save(); ctx.translate(x,y); if (flip) ctx.scale(-1,1);
-        ctx.fillStyle=['#ff4d6d','#ff6b8a','#00e5ff','#7c5cff','#00ff9f'][row];
-        ctx.fillRect(6,4,16,10); ctx.fillRect(2,8,24,6); ctx.fillRect(9,1,4,4); ctx.fillRect(15,1,4,4);
-        ctx.fillRect(0,14,6,4); ctx.fillRect(22,14,6,4); ctx.fillRect(7,14,4,5); ctx.fillRect(17,14,4,5);
-        ctx.fillStyle='#090014'; ctx.fillRect(9,7,3,3); ctx.fillRect(17,7,3,3);
-        ctx.restore();
-      }
-      function draw() {
-        const grd=ctx.createLinearGradient(0,0,0,H); grd.addColorStop(0,'#05010d'); grd.addColorStop(1,'#11002a');
-        ctx.fillStyle=grd; ctx.fillRect(0,0,W,H);
-        // estrellas
-        ctx.fillStyle='rgba(255,255,255,.65)';
-        for(let i=0;i<70;i++){ const x=(i*83)%W,y=(i*47)%H; ctx.fillRect(x,y,1,1); }
-        barriers.forEach(b=>b.blocks.forEach(q=>{ctx.fillStyle=q.hp===2?'#55efc4':'#00b894';ctx.fillRect(q.x,q.y,9,7);}));
-        ctx.fillStyle='#00cec9'; ctx.fillRect(player.x+6,player.y+7,player.w-12,11); ctx.fillRect(player.x+17,player.y,10,10); ctx.fillRect(player.x+2,player.y+13,8,5); ctx.fillRect(player.x+34,player.y+13,8,5);
-        bullets.forEach(b=>{ctx.fillStyle='#fdcb6e';ctx.fillRect(b.x-2,b.y-10,4,10);});
-        enemyBullets.forEach(b=>{ctx.fillStyle='#ff4757';ctx.fillRect(b.x-2,b.y,4,10);});
-        enemies.forEach(e=>{if(e.alive)sprite(e.x,e.y,e.row,Math.floor(performance.now()/350)%2);});
-        ctx.fillStyle='#fff';ctx.font='800 16px Nunito';ctx.fillText('Puntos: '+score,12,24);ctx.fillText('Vidas: '+lives,W-86,24);
-        if(dead){ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 30px Nunito';ctx.fillText(enemies.every(e=>!e.alive)?'¡INVASIÓN DETENIDA!':'GAME OVER',W/2,H/2-18);ctx.font='700 16px Nunito';ctx.fillText('Puntos: '+score+' · R para reiniciar',W/2,H/2+18);ctx.textAlign='left';}
-      }
-      function hitPlayer() {
-        lives--; player.x=W/2-player.w/2; enemyBullets=[];
-        if(lives<=0) dead=true;
-      }
-      function update() {
-        if(currentGame!=='invaders') return;
-        if(!dead){
-          if(keys.left) player.x-=player.speed;
-          if(keys.right) player.x+=player.speed;
-          player.x=Math.max(0,Math.min(W-player.w,player.x));
-          if(fireCooldown>0) fireCooldown--;
-          if(keys.fire && fireCooldown===0){bullets.push({x:player.x+player.w/2,y:player.y});fireCooldown=12;}
-          bullets.forEach(b=>b.y-=9); bullets=bullets.filter(b=>b.y>-15);
-          enemyBullets.forEach(b=>b.y+=5); enemyBullets=enemyBullets.filter(b=>b.y<H+15);
-          const alive=enemies.filter(e=>e.alive);
-          if(alive.length){
-            const minX=Math.min(...alive.map(e=>e.x)), maxX=Math.max(...alive.map(e=>e.x+e.w));
-            if(minX<=12 || maxX>=W-12){dir*=-1; alive.forEach(e=>e.y+=14); edgeTimer=0;} else {alive.forEach(e=>e.x+=dir*(1.1+Math.max(0,(45-alive.length)*0.035)));}
-            edgeTimer++;
-            if(Math.random()<0.012+Math.min(.018,(45-alive.length)*.0006)){const cols=[...new Set(alive.map(e=>Math.round(e.x)))];const col=cols[Math.floor(Math.random()*cols.length)];const shooters=alive.filter(e=>Math.abs(e.x-col)<8);const e=shooters[shooters.length-1]||alive[alive.length-1];enemyBullets.push({x:e.x+e.w/2,y:e.y+e.h});}
-          }
-          for(const b of bullets){
-            if(b.y<0) continue;
-            for(const e of enemies){if(e.alive&&b.x>e.x&&b.x<e.x+e.w&&b.y>e.y&&b.y<e.y+e.h){e.alive=false;b.y=-100;score+=10;break;}}
-            if(b.y<0) continue;
-            for(const barrier of barriers){for(const q of barrier.blocks){if(b.x>q.x&&b.x<q.x+9&&b.y>q.y&&b.y<q.y+7){q.hp--;b.y=-100;break;}}}
-          }
-          enemyBullets=enemyBullets.filter(b=>{for(const barrier of barriers){const q=barrier.blocks.find(q=>b.x>q.x&&b.x<q.x+9&&b.y+8>q.y&&b.y<q.y+7);if(q){q.hp--;return false;}}return true;});
-          if(enemyBullets.some(b=>b.x>player.x&&b.x<player.x+player.w&&b.y+10>player.y&&b.y<player.y+player.h)){hitPlayer();}
-          barriers.forEach(b=>b.blocks=b.blocks.filter(q=>q.hp>0));
-          if(enemies.every(e=>!e.alive)||enemies.some(e=>e.alive&&e.y+e.h>=player.y-5)) dead=true;
-        }
-        draw(); animId=requestAnimationFrame(update);
-      }
-      window.onkeydown=e=>{if(e.key==='ArrowLeft'){keys.left=true;e.preventDefault();}if(e.key==='ArrowRight'){keys.right=true;e.preventDefault();}if(e.key===' '){keys.fire=true;e.preventDefault();}if(dead&&(e.key==='r'||e.key==='R'))reset();};
-      window.onkeyup=e=>{if(e.key==='ArrowLeft')keys.left=false;if(e.key==='ArrowRight')keys.right=false;if(e.key===' ')keys.fire=false;};
-      const invPadInterval=setInterval(()=>{if(currentGame!=='invaders'){clearInterval(invPadInterval);return;}},1000);
-      addMobileDpad(body,{left:{down:()=>keys.left=true,up:()=>keys.left=false},right:{down:()=>keys.right=true,up:()=>keys.right=false},action:{down:()=>{keys.fire=true;},up:()=>{keys.fire=false;}}},{actionLabel:'🔥'});
-      makeOverlay(body,'Space Invaders 👾','← → mover · Mantén 🔥 para disparar · Destruye la invasión','Jugar',()=>update());
+      function burst(x,y,color,count=7){for(let i=0;i<count;i++)particles.push({x,y,vx:(Math.random()-.5)*120,vy:(Math.random()-.5)*120,life:.35+Math.random()*.35,color})}
+      function sprite(x,y,row,flip=false){ctx.save();ctx.translate(x,y);if(flip)ctx.scale(-1,1);ctx.fillStyle=['#ff4d6d','#ff6b8a','#00e5ff','#7c5cff','#00ff9f'][row];ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=8;ctx.fillRect(6,4,16,10);ctx.fillRect(2,8,24,6);ctx.fillRect(9,1,4,4);ctx.fillRect(15,1,4,4);ctx.fillRect(0,14,6,4);ctx.fillRect(22,14,6,4);ctx.fillRect(7,14,4,5);ctx.fillRect(17,14,4,5);ctx.shadowBlur=0;ctx.fillStyle='#090014';ctx.fillRect(9,7,3,3);ctx.fillRect(17,7,3,3);ctx.restore()}
+      function draw(now=performance.now()){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#05010d');g.addColorStop(1,'#11002a');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);stars.forEach((st,i)=>{ctx.globalAlpha=st.a*(.65+.35*Math.sin(now*.002+i));ctx.fillStyle='#fff';ctx.fillRect(st.x,st.y,st.r,st.r)});ctx.globalAlpha=1;barriers.forEach(b=>b.blocks.forEach(q=>{ctx.fillStyle=q.hp>=3?'#55efc4':q.hp===2?'#35cfa8':'#00b894';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=5;ctx.fillRect(q.x,q.y,9,7);ctx.shadowBlur=0}));ctx.fillStyle='#00cec9';ctx.shadowColor='#00cec9';ctx.shadowBlur=12;if(invulnerable<=0 || Math.floor(invulnerable*10)%2===0){ctx.fillRect(player.x+6,player.y+7,player.w-12,11);ctx.fillRect(player.x+23,player.y,10,10);}ctx.fillRect(player.x+2,player.y+13,8,5);ctx.fillRect(player.x+34,player.y+13,8,5);ctx.shadowBlur=0;bullets.forEach(b=>{ctx.fillStyle='#fdcb6e';ctx.shadowColor='#fdcb6e';ctx.shadowBlur=10;ctx.fillRect(b.x-4,b.y-14,8,14)});enemyBullets.forEach(b=>{ctx.fillStyle='#ff4757';ctx.shadowColor='#ff4757';ctx.shadowBlur=9;ctx.fillRect(b.x-2,b.y,4,8)});ctx.shadowBlur=0;enemies.forEach(e=>{if(e.alive)sprite(e.x,e.y,e.row,Math.floor(now/350)%2)});particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life/.7);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,3,3)});ctx.globalAlpha=1;ctx.fillStyle='#fff';ctx.font='800 16px Nunito';ctx.fillText('Puntos: '+score,12,24);ctx.fillText('Vidas: '+lives,W-86,24);if(invulnerable>0){ctx.font='700 13px Nunito';ctx.fillText('ESCUDO '+invulnerable.toFixed(1),W/2-35,24)}if(dead){ctx.fillStyle='rgba(0,0,0,.72)';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 30px Nunito';ctx.fillText(enemies.every(e=>!e.alive)?'¡INVASIÓN DETENIDA!':'GAME OVER',W/2,H/2-18);ctx.font='700 16px Nunito';ctx.fillText('R / tocar para reiniciar',W/2,H/2+18);ctx.textAlign='left'}}
+      function hitPlayer(){if(invulnerable>0)return;lives--;player.x=W/2-player.w/2;enemyBullets=[];invulnerable=2.2;burst(player.x+player.w/2,player.y,'#ff4757',16);if(lives<=0)dead=true}
+      function update(now){if(currentGame!=='invaders')return;const dt=Math.min(.033,Math.max(.001,(now-lastTime)/1000));lastTime=now;if(!dead){if(keys.left)player.x-=player.speed*dt;if(keys.right)player.x+=player.speed*dt;player.x=Math.max(0,Math.min(W-player.w,player.x));fireCooldown=Math.max(0,fireCooldown-dt);invulnerable=Math.max(0,invulnerable-dt);
+        // Disparo automático: así en móvil no tienes que estar apretando el botón todo el rato.
+        if(fireCooldown<=0){bullets.push({x:player.x+player.w/2,y:player.y});fireCooldown=.075}
+        bullets.forEach(b=>b.y-=900*dt);bullets=bullets.filter(b=>b.y>-15);enemyBullets.forEach(b=>b.y+=70*dt);enemyBullets=enemyBullets.filter(b=>b.y<H+15);particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=.96;p.vy*=.96;p.life-=dt});for(let i=particles.length-1;i>=0;i--)if(particles[i].life<=0)particles.splice(i,1);const alive=enemies.filter(e=>e.alive);if(alive.length){const minX=Math.min(...alive.map(e=>e.x)),maxX=Math.max(...alive.map(e=>e.x+e.w)),enemySpeed=13+Math.max(0,(45-alive.length)*0.45);if(minX<=12||maxX>=W-12){dir*=-1;alive.forEach(e=>e.y+=4)}else alive.forEach(e=>e.x+=dir*enemySpeed*dt);if(Math.random()<dt*(.035+Math.min(.08,(45-alive.length)*.003))){const cols=[...new Set(alive.map(e=>Math.round(e.x/42)))],col=cols[Math.floor(Math.random()*cols.length)],shooters=alive.filter(e=>Math.abs(Math.round(e.x/42)-col)<1.1),e=shooters[shooters.length-1]||alive[alive.length-1];enemyBullets.push({x:e.x+e.w/2,y:e.y+e.h})}}
+        for(const b of bullets){if(b.y<0)continue;for(const e of enemies)if(e.alive&&b.x>e.x-8&&b.x<e.x+e.w+8&&b.y>e.y-8&&b.y<e.y+e.h+8){e.alive=false;b.y=-100;score+=10;burst(e.x+e.w/2,e.y+e.h/2,['#ff4d6d','#00e5ff','#7c5cff','#00ff9f'][e.row%4],9);break}}
+        enemyBullets=enemyBullets.filter(b=>{for(const barrier of barriers){const q=barrier.blocks.find(q=>b.x>q.x&&b.x<q.x+9&&b.y+8>q.y&&b.y<q.y+7);if(q){q.hp--;return false}}return true});if(invulnerable<=0 && enemyBullets.some(b=>b.x>player.x-6&&b.x<player.x+player.w+6&&b.y+8>player.y&&b.y<player.y+player.h))hitPlayer();barriers.forEach(b=>b.blocks=b.blocks.filter(q=>q.hp>0));if(enemies.every(e=>!e.alive)||enemies.some(e=>e.alive&&e.y+e.h>=player.y+15))dead=true}draw(now);animId=requestAnimationFrame(update)}
+      function moveToClient(clientX){const r=canvas.getBoundingClientRect();const x=(clientX-r.left)*(W/r.width);player.x=Math.max(0,Math.min(W-player.w,x-player.w/2))}
+      let dragging=false;
+      function press(e){e.preventDefault();if(dead){reset();lastTime=performance.now();return}dragging=true;keys.fire=true;moveToClient(e.clientX)}
+      function move(e){if(!dragging)return;e.preventDefault();moveToClient(e.clientX)}
+      function release(e){if(e)e.preventDefault();dragging=false;keys.fire=false}
+      canvas.addEventListener('pointerdown',press);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('pointerleave',e=>{if(e.buttons===0)release(e)});
+      canvas.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];if(t){if(dead){reset();lastTime=performance.now();return}dragging=true;keys.fire=true;moveToClient(t.clientX)}},{passive:false});
+      canvas.addEventListener('touchmove',e=>{e.preventDefault();if(dragging&&e.touches[0])moveToClient(e.touches[0].clientX)},{passive:false});
+      canvas.addEventListener('touchend',release,{passive:false});canvas.addEventListener('touchcancel',release,{passive:false});
+      window.onkeydown=e=>{const k=e.key.toLowerCase();if(k==='arrowleft'||k==='a'){keys.left=true;e.preventDefault()}if(k==='arrowright'||k==='d'){keys.right=true;e.preventDefault()}if(k===' '||k==='z'){keys.fire=true;e.preventDefault()}if(dead&&k==='r'){reset();lastTime=performance.now()}};
+      window.onkeyup=e=>{const k=e.key.toLowerCase();if(k==='arrowleft'||k==='a')keys.left=false;if(k==='arrowright'||k==='d')keys.right=false;if(k===' '||k==='z')keys.fire=false};
+      addMobileDpad(body,{left:{down:()=>keys.left=true,up:()=>keys.left=false},right:{down:()=>keys.right=true,up:()=>keys.right=false},action:{down:()=>keys.fire=true,up:()=>keys.fire=false}},{actionLabel:'🔥',forceShow:true});
+      draw(performance.now());
+      animId=requestAnimationFrame(update);
     }
 
     // ========== 16. AIR HOCKEY (2 jugadores) ==========
@@ -2774,7 +2741,7 @@
       window.EJS_gameName = gameName;
       window.EJS_gameID = Math.abs([...String(gameName)].reduce((h,c) => ((h << 5) - h + c.charCodeAt(0)) | 0, 0)) || 1;
       const emuPrefs = (() => {
-        try { return JSON.parse(localStorage.getItem('elvergalarga_emulator_settings_v1') || '{}'); } catch (_) { return {}; }
+        try { return JSON.parse(localStorage.getItem('gamehub_emulator_settings_v1') || '{}'); } catch (_) { return {}; }
       })();
       window.EJS_color = '#6c5ce7';
       window.EJS_startOnLoaded = false;
@@ -2836,6 +2803,7 @@
         <div style="color:#a0a0c0;font-size:0.88rem;max-width:380px;line-height:1.45">${rom.desc}</div>
         <button id="romPlay" style="background:linear-gradient(135deg,#6c5ce7,#00cec9);color:#fff;border:none;padding:0.75rem 1.7rem;border-radius:50px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:6px">▶ Jugar ahora</button>
         <a id="romDownload" href="${url}" download="${romFileName(rom)}" style="color:#fdcb6e;font-size:0.82rem;font-weight:700;text-decoration:none">⬇ Descargar ROM (${romFileName(rom)})</a>
+         <a href="${url}" target="_blank" rel="noopener" style="color:#74b9ff;font-size:0.78rem;font-weight:700;text-decoration:none">↗ Abrir archivo si la descarga está bloqueada</a>
         <div id="romStatus" style="color:#a0a0c0;font-size:0.78rem;min-height:1.2em"></div>
         <div style="color:#a0a0c0;font-size:0.72rem;max-width:360px;line-height:1.4">
           ${rom.local ? 'ROM local: se mantiene como archivo de tu sitio/dispositivo. Si la publicas, verifica que tengas derecho a redistribuirla.' : 'Homebrew publicado por su autor para descarga libre (colección retrobrews).'}
@@ -2853,25 +2821,31 @@
         bootEmulator(gameBox, rom.core, url, rom.title);
       });
 
-      // Descarga forzada como archivo: el atributo download no aplica cross-origin.
+      // Descarga robusta: jsDelivr -> GitHub Raw -> enlace directo si la red bloquea fetch.
       ui.querySelector('#romDownload').addEventListener('click', async e => {
         e.preventDefault();
         const status = ui.querySelector('#romStatus');
+        const sources = [url, romRawUrl(rom)].filter((v, i, a) => v && a.indexOf(v) === i);
         status.textContent = 'Descargando…';
-        try {
-          const res = await fetch(url);
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const blob = await res.blob();
-          const objUrl = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = objUrl;
-          a.download = romFileName(rom);
-          a.click();
-          setTimeout(() => URL.revokeObjectURL(objUrl), 10000);
-          status.textContent = 'ROM descargada ✔';
-        } catch (_) {
-          status.textContent = 'No se pudo descargar (sin internet o bloqueado).';
+        for (const source of sources) {
+          try {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 12000);
+            const res = await fetch(source, { mode:'cors', cache:'force-cache', signal:controller.signal });
+            clearTimeout(timer);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const blob = await res.blob();
+            if (!blob.size) throw new Error('Archivo vacío');
+            const objUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = objUrl; a.download = romFileName(rom);
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(objUrl), 10000);
+            status.textContent = 'ROM descargada ✔';
+            return;
+          } catch (_) {}
         }
+        status.innerHTML = 'La red bloqueó la descarga. <a href="' + url + '" target="_blank" rel="noopener" style="color:#74b9ff;font-weight:800">Abrir fuente</a> o prueba desde otra red.';
       });
     }
 
@@ -2944,7 +2918,7 @@
       // Persistencia local de la ROM seleccionada. La ROM queda en el dispositivo,
       // no se sube a GitHub ni a ningún servidor. Los saves del núcleo dependen
       // de EmulatorJS/core y pueden usar su propio almacenamiento local.
-      const ROM_DB = 'elvergalarga_roms_v1';
+      const ROM_DB = 'gamehub_roms_v1';
       function openRomDB() {
         return new Promise((resolve,reject)=>{
           if (!window.indexedDB) return reject(new Error('IndexedDB no disponible'));
@@ -2968,7 +2942,7 @@
       }
       // Preferencias del emulador sí se guardan; el progreso del Cookie Clicker no.
       try {
-        const p = JSON.parse(localStorage.getItem('elvergalarga_emulator_settings_v1') || '{}');
+        const p = JSON.parse(localStorage.getItem('gamehub_emulator_settings_v1') || '{}');
         ui.querySelector('#emuPerf').value = p.performance ? 'performance' : (p.battery ? 'battery' : 'balanced');
         if (ui.querySelector('#emuTurbo')) ui.querySelector('#emuTurbo').value = p.turbo === false ? 'balanced' : 'turbo';
         ui.querySelector('#emuVolume').value = typeof p.volume === 'number' ? p.volume : 0.7;
@@ -2978,7 +2952,7 @@
         const turbo = ui.querySelector('#emuTurbo')?.value === 'turbo';
         const volume = Number(ui.querySelector('#emuVolume').value);
         try {
-          localStorage.setItem('elvergalarga_emulator_settings_v1', JSON.stringify({
+          localStorage.setItem('gamehub_emulator_settings_v1', JSON.stringify({
             performance: mode === 'performance',
             battery: mode === 'battery',
             turbo,
@@ -3313,4 +3287,4 @@
 </body>
 </html>
 
-<script>window.addEventListener('pagehide',()=>{try{localStorage.setItem('elvergalarga_last_visit',String(Date.now()))}catch(e){}});</script>
+<script>window.addEventListener('pagehide',()=>{try{localStorage.setItem('gamehub_last_visit',String(Date.now()))}catch(e){}});</script>
